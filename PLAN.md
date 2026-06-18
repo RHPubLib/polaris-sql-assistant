@@ -5,7 +5,7 @@ Director) delivers into the Oakland Township Library Board decision, plus the se
 **Director brief** to Juliane Morian. This plan defines the *content and stance* of that memo — no code
 or config is built here.
 
-Source of record: `/var/opt/rhpl/polarislql/autolend-oakland-township-evaluation.md` (full scorecard,
+Source of record: `/var/opt/rhpl/polarissql/autolend-oakland-township-evaluation.md` (full scorecard,
 vendor/Clarivate threads, open-items tracker).
 
 ---
