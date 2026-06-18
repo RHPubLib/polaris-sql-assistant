@@ -45,3 +45,25 @@ stunnel server** (cleartext SIP2 exists only transiently inside the kiosk app, n
 is an independent outer layer). Reframed the Model 2 staff-portal claim to "secures the **network path**,
 not the box." Upgraded R3 (Splashtop) to real mitigations + honest residual. Added R7 (egress isolation /
 blast radius) and R8 (local proxy bypass). Added a "residuals we will not hide from the board" note.
+
+### Round 2 — Gemini: REVISE · local: APPROVED
+
+**Gemini objections (all valid operational fixes, incorporated):**
+1. **Egress ACL over-constrained → breaks the box.** "Only Clarivate + RMM" blocks **NTP** (stunnel/TLS
+   needs accurate time), **DNS** (resolving Clarivate/Splashtop), and **Windows Update/Defender/CRL-OCSP**.
+   The allowlist must include foundational OS/time/name/update/revocation services; the *deny* target is
+   lateral access to RHPL internal, not all internet.
+2. **Reverse-proxy routing contradicts "no route to RHPL internal."** Needed to define the ingress path:
+   isolation constrains **kiosk-initiated** egress; RHPL-initiated admin/proxy access to the portal over
+   the SpeedFusion management tunnel is a *separate, tightly-scoped* inbound ACL (only the proxy host may
+   reach the portal port).
+3. **stunnel MITM.** Must mandate **certificate verification** (`verifyPeer`/`verifyChain` vs. Clarivate's
+   cert/CA) in the go-live gate — encryption without cert validation is MITM-able.
+
+**Local (Qwen):** bare `VERDICT: APPROVED` again — low signal.
+
+**Revisions made:** egress ACL reworded to **default-deny + explicit allowlist** including DNS/NTP/
+Windows-Update/Defender/CRL-OCSP, with the deny target scoped to RHPL-internal lateral movement. Defined
+the reverse-proxy **ingress path** (kiosk-egress isolation vs. RHPL-initiated inbound over the tunnel;
+proxy-host-only ACL to the portal port). Added **stunnel cert-verification** to the go-live gate (Approach
+§3 + R2).
