@@ -174,3 +174,24 @@ endpoint, and egress filtering are NEW deployments for RHPL** — same gear/skil
 "Maturity check (honest)" block to PLAN Model 2 + softened the eval-doc connectivity-design paragraph.
 Board message: the *components and skills* are proven here, the *topology* is new — don't call it
 battle-tested.
+
+### Honest-voice pass — gap-check vs. Bill's email (2026-06-18)
+
+Derek: "give them an honest voice … it does sound like others don't lock down the device as much as we are
+asking." Re-read Bill's email line-by-line; gaps found and now captured in the eval doc:
+- Encryption is **optional in Bill's framing** + encrypts **ALL traffic** (not just SIP2). (was missing)
+- Bill **advocates testing** + offered to test holds pickup with us → our proof-of-integration gate is *his*
+  recommendation, not imposed. (now credited)
+- Two **candid admissions** never recorded: nobody has asked him for admin challenge/response auth; almost
+  no site encrypts the staff web pages. → we are an outlier; hardening is *achievable* but *bespoke/first-
+  time* for ILS = mild execution risk, NOT a product flaw.
+- Bill **proactively raised** the HTTP staff exposure (transparency credit).
+- Bill's reasoning that the **local dummy-card admin is itself low-risk** ("nothing to protect") — now
+  represented fairly instead of overridden.
+- **Partial answer flagged:** Bill did NOT confirm native Google OIDC/SAML/FIDO2 or named-vs-shared on the
+  staff *web* UI (answered the on-device admin + Academic OAuth instead). Tracker #16 downgraded
+  RESOLVED→PARTIAL; we solve via our proxy, native unconfirmed.
+
+Added an "ILS (the vendor) — an honest voice" section to the eval doc: credits that Bill said **yes to every
+hardening ask** and was candid/transparent; frames the "others lock down less" candor both ways; closes with
+"a reason to verify, not to distrust."
