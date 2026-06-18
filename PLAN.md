@@ -64,11 +64,16 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
        internal/production systems**, and **Clarivate (not RHPL) hosts the Polaris data.** So the device's
        only privileged destination is Clarivate — the same place our Polaris already lives, behind
        Clarivate's controls. There is **no RHPL-internal pivot surface.**
-     - **The box keeps normal WAN for its own OS needs.** Per Bill ("let the network layer work
-       normally"), the Windows box uses ordinary cellular WAN for DNS/NTP/time and vendor-managed
-       OS/AV updates (via the RMM channel); only the **SIP2 session** rides the dedicated stunnel tunnel.
-       We are *not* imposing a single restrictive egress ACL that would starve the OS of time/name/update
-       services.
+     - **The box keeps normal WAN for its own OS needs (default) — with an exfiltration tradeoff to name.**
+       Per Bill ("let the network layer work normally"), by default the Windows box uses ordinary WAN for
+       DNS/NTP/time and vendor-managed OS/AV updates (via RMM); only the **SIP2 session** rides the
+       dedicated stunnel tunnel. **Honest consequence:** normal WAN means a compromised box can exfiltrate
+       (R3) — isolation protects RHPL internal, not data confidentiality. *Optional Tier-2 layer:* since
+       Model 2 already routes the box through our Peplink, we **could** apply a **default-deny egress
+       allowlist** (Clarivate + Windows Update/Defender + NTP + DNS + CRL/OCSP + Splashtop) to bound
+       exfiltration — but those endpoints are CDN/rotating, so it is **operationally heavy and brittle**,
+       and we own the maintenance. Present it as a deliberate choice (default: normal WAN + monitor;
+       hardened: egress filtering), not a free win.
      - **stunnel with certificate verification** — see §3; encryption alone isn't enough, the kiosk's
        stunnel client must validate Clarivate's server cert (`verifyPeer`/`verifyChain`) to prevent MITM.
      - **Two access surfaces, treated oppositely** (see "Two distinct access surfaces"): physical
