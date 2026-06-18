@@ -382,14 +382,14 @@ deferred — not material to this decision right now.**
 | 5 | TLS enforceable, no cleartext fallback | Bill (vendor) | **RESOLVED 6/18** — no cleartext fallback in tunnel; enforce that Polaris's cleartext SIP is never the fallback |
 | 6 | Offline mode OFF, no patron data on device | Bill (vendor) | **RESOLVED 6/18** — configurable "Out of Service"; fail-closed confirmed |
 | 7 | Standard Polaris notice for already-resident copies | Bill (vendor) | **RESOLVED 6/18** — ILS sends the configured (standard Polaris) notice |
-| 8 | Polaris customer references for board submission | Bill (vendor) | Open — awaiting permission |
-| 9 | OT-vs-RHPL Polaris scoping (branch/collection/SIP login) | RHPL internal | Open |
-| 10 | Restock cadence + owner | RHPL/OT | Open |
+| 8 | Polaris customer references for board submission | Bill (vendor) | **Open** — Bill expects names back **today (6/18)**; chasing |
+| 9 | OT-vs-RHPL Polaris scoping (branch/collection/SIP login) | RHPL internal | **Deferred** — not material to this decision now |
+| 10 | Restock cadence + owner | RHPL/OT | **Deferred** — not material to this decision now |
 | 11 | SIP2-vs-PAPI reassurance note for Director (Juliane) | RHPL internal | Optional / pending |
-| 12 | Stable allowlisted source IP — Peplink+FusionHub (preferred) vs. carrier static IP | RHPL / Bill | Asked Bill 6/18 — gating for 6/25 |
-| 13 | Inbound staff-web-interface exposure (HTTPS? auth? IP-restrict or via portal?) | Bill (vendor) / RHPL | Asked Bill 6/18 — gating for 6/25 |
-| 14 | stunnel setup guidance + guarantee no cleartext-SIP fallback | Bill (vendor) | Asked Bill 6/18 — gating for 6/25 |
-| 15 | Vendor Remote Access RMM: broker/outbound? capabilities? IdP auth? accept free IT account | Bill (vendor) / RHPL | Asked Bill 6/18 |
-| 16 | Staff SSO via Google OAuth/OIDC or SAML + FIDO2 MFA; named accounts vs. shared | Bill (vendor) | Asked Bill 6/18 |
-| 17 | AutoLend accepts Ethernet WAN handoff (gates the Peplink design) | Bill (vendor) | Asked Bill 6/18 — gating for 6/25 |
-| 18 | Read-only PAPI content channel re-confirm (bib only, no patron/item writes) | Bill (vendor) | Asked Bill 6/18 |
+| 12 | Stable allowlisted source IP — Peplink+FusionHub (preferred) vs. carrier static IP | RHPL / Bill | **RESOLVED 6/18** — folded into the two-model choice (Model 2 = FusionHub static IP) |
+| 13 | Inbound staff-web-interface exposure (HTTPS? auth? IP-restrict or via portal?) | Bill (vendor) / RHPL | **RESOLVED 6/18** — HTTP default, no PII; harden via cert / IP-restrict / our auth-proxy (proxy under Model 2) |
+| 14 | stunnel setup guidance + guarantee no cleartext-SIP fallback | Bill (vendor) | **RESOLVED 6/18** — ~30 min setup, both ends; live holds-pickup test required |
+| 15 | Vendor Remote Access RMM: broker/outbound? capabilities? IdP auth? accept free IT account | Bill (vendor) / RHPL | **RESOLVED 6/18** — Splashtop, cloud-brokered/outbound, own MFA (not our IdP); take free IT acct |
+| 16 | Staff SSO via Google OAuth/OIDC or SAML + FIDO2 MFA; named accounts vs. shared | Bill (vendor) | **RESOLVED 6/18** — admin screen local-card only; web-portal FIDO2 via our proxy (Model 2) |
+| 17 | AutoLend accepts Ethernet WAN handoff (gates the Peplink design) | Bill (vendor) | **RESOLVED 6/18** — wired or WiFi WAN accepted; Peplink design endorsed |
+| 18 | Read-only PAPI content channel re-confirm (bib only, no patron/item writes) | Bill (vendor) | **RESOLVED 6/18** — read/search only, no writes of any kind |
