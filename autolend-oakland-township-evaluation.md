@@ -75,6 +75,87 @@ directly to our Clarivate-hosted Polaris, never touching the RHPL/OT network.
 
 ---
 
+## Update 2026-06-18 — vendor + Clarivate responses evaluated
+
+Both Bill (ILS) and Mike O'Connor (Lead Systems Engineer, Clarivate) replied. This closes the two gating
+questions and surfaces one new security item.
+
+### 1. Encrypted SIP2 = stunnel, and it is the *only* encryption path — RESOLVED, with a caveat
+
+- **Clarivate (Mike):** Polaris has **no native TLS on the SIP service**. The kiosk **cannot** TLS directly
+  to the SIP port. The only encrypted option is Clarivate standing up an **stunnel** proxy, with the vendor
+  running a compatible stunnel/TLS client on their end. Clarivate sets it up and provides connection steps.
+  **No fee.**
+- **Bill (ILS):** Describes his TLS as "a point-to-point tunnel on a port(s)… no clear-text fallbacks" —
+  which *is* the stunnel model. Both ends therefore support it; it's free; Bill explicitly disclaims cleartext
+  fallback inside the tunnel.
+- **Caveat (load-bearing):** because there is no native TLS, the non-stunnel state is **cleartext, not
+  "encrypted by default."** PIN/barcode protection rests entirely on stunnel being correctly stood up and the
+  device never touching a raw SIP port. Bill's tone is mildly indifferent ("if they don't, no issues for us
+  anyway… it's up to Hosting"), so **we must drive this**: make stunnel a contractual go-live gate, confirm
+  Bill's client is stunnel-compatible per Clarivate's steps, and verify no plaintext SIP listener is reachable.
+
+### 2. Static IP is now a HARD requirement — confirmed by both vendors, for two independent reasons
+
+- **Clarivate:** the stunnel/SIP2 endpoint is **source-IP allowlisted**; Mike says a dynamic cellular IP
+  "would **definitely** cause future problems."
+- **Bill:** staff reach the web-based staff page at the device's **WAN address**, which rolls constantly on a
+  non-static cellular link.
+
+This is the cleanest resolution of our biggest open risk: the **"pure cellular, no VPN" architecture survives
+intact.** A static carrier IP is still just the device's own WAN — it does **not** reintroduce RHPL network
+involvement. Risk → procurement line item. Residual: confirm the carrier plan can provide a static IP and at
+what monthly cost. (Bill floated allowlisting a whole **Class C /24** as an alternative — skip it: Mike's
+"definitely cause problems" plus a /24 being a far broader trust surface than a single /32 both argue for the
+static IP.)
+
+### 3. NEW security finding — inbound staff-web-interface exposure on the public cellular IP
+
+We had modeled the device as **outbound-only** to Clarivate. Bill's static-IP rationale reveals the
+**web-based staff interface is reached at the device's public cellular IP** — i.e., an **inbound web service
+exposed on the open internet.** This is the most important new item.
+
+Questions for Bill before we're comfortable:
+- Is the staff interface **HTTPS-only with a valid cert**, or plain HTTP?
+- Auth: per-user accounts, lockout/brute-force protection, MFA? Any default credentials to change?
+- Can inbound access be **IP-restricted (device-side firewall allowlist)** to RHPL/OT staff source IPs?
+- Can staff functions be reached **through the vendor remote-access portal instead**, so **no inbound port is
+  exposed at all**?
+
+**Recommendation:** do not leave the staff page open to the whole internet. Either firewall it to allowlisted
+staff IPs, or disable the public staff page and rely on (a) the on-screen physical admin UI for restocking and
+(b) the vendor remote-access portal for remote work. Closing the staff page removes the *staff-access* reason
+for a static IP, but Clarivate's allowlist reason still mandates it — **static IP stays either way.**
+
+### 4. Vendor "Remote Access" RMM dashboard — understand and bound it
+
+Bill noted ILS's support/maintenance includes a **free account on the same Remote Access dashboard they use**,
+offered to RHPL IT, separate from the staff web interface. Almost certainly a **cloud-brokered outbound tunnel**
+(device dials vendor cloud, admins log into a portal) — if so, no inbound exposure, which is fine. Confirm it's
+broker/outbound, what it can do (likely full control of the Win10 IoT box), and the auth model. Under the
+segmentation decision this is a vendor↔vendor responsibility, but the board should understand a vendor plane can
+fully control a device transacting our patron data. **Taking the free IT account is worth it for visibility.**
+
+### 5. Other confirmations from Bill
+
+- **Offline mode:** confirmed — if not enabled, no browse screen; displays a **configurable "Out of Service"**
+  message. Matches our fail-closed requirement. (Resolves open item #6.)
+- **Notification edge case:** confirmed — "the ILS is left to send whichever notice you have it configured to
+  send," i.e., the **standard Polaris notice**, not a device-generated one. (Resolves open item #7.)
+- **References:** still pending — Bill awaiting permission to share names. (#8 open.)
+
+### Must-haves before the 6/25 vote (all now tractable — no showstoppers)
+
+1. Confirm a **static cellular IP** is obtainable and its monthly cost.
+2. Get **Clarivate and Bill to agree the stunnel setup**, with us enforcing no-cleartext (cert exchange,
+   endpoint/port, the static source IP to allowlist).
+3. Decide the **staff-interface exposure** question (IP-restrict vs. disable-in-favor-of-portal).
+
+Still unanswered by Clarivate: **read-only PAPI enablement/cost** and **lead time** (Mike addressed only
+stunnel + allowlisting).
+
+---
+
 ## Workload impact
 
 **Circ / librarians — LOW.**
