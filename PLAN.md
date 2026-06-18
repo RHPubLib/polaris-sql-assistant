@@ -170,13 +170,15 @@ The kiosk has **two different ways in**, and they get **opposite** treatment:
 - **R6 — Board misreads scope** as a competitive "best kiosk" recommendation or as a reliability
   endorsement. *Mitigation:* scope disclaimer up front; "this vendor's product is technically workable"
   wording.
-- **R7 — No pivot surface into RHPL (design property, not a residual).** The reviewer raised lateral
-  movement from an untrusted vendor box on our VPN. **Per design this cannot reach RHPL:** the tunnel is a
-  **dedicated IP built Peplink ↔ Clarivate**, the endpoint is **dedicated and never bridged to RHPL
-  internal/production**, and **Clarivate hosts the Polaris data, not RHPL.** A compromised kiosk reaches
-  only Clarivate's allowlisted endpoint (where our data already lives, under Clarivate's controls). The
-  control that *keeps* this true: the tunnel endpoint stays dedicated/single-purpose and is never bridged
-  onto an RHPL LAN — that is the one thing to hold the line on during build.
+- **R7 — No pivot surface into RHPL internal (scoped claim — NOT a no-exfiltration claim).** The reviewer
+  raised lateral movement from an untrusted vendor box on our VPN. **Into RHPL internal, this cannot
+  happen by design:** the **SpeedFusion tunnel** is a dedicated path Peplink ↔ Clarivate, the endpoint is
+  **dedicated and never bridged to RHPL internal/production**, and **Clarivate hosts the Polaris data, not
+  RHPL.** So over the *tunnel*, a compromised kiosk reaches only Clarivate (where our data already lives,
+  under Clarivate's controls), never an RHPL LAN. **Scope of this claim, stated honestly:** it covers the
+  *tunnel/RHPL-internal* surface only — it does **not** mean a compromised box can't reach the internet
+  generally (it has its own WAN) or can't exfiltrate (see R3). The control to hold during build: the
+  tunnel endpoint stays dedicated/single-purpose and is never bridged onto an RHPL LAN.
 - **R8 — Local bypass of the reverse proxy.** The staff portal runs *on the kiosk*, so on-device or
   Splashtop access bypasses our proxy + FIDO2 entirely — the proxy only secures the network path, not the
   box. *Mitigation:* don't overstate the control (done in the memo wording); rely on the on-device
