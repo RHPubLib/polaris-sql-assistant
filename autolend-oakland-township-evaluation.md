@@ -437,6 +437,58 @@ assembly. **Components proven; topology new.** Don't present the exact topology 
 
 ---
 
+## ILS (the vendor) — an honest voice: what Bill offered, and what he told us is "normal" — 2026-06-18
+
+We have evaluated this through a deliberately strict security lens, so it is only fair to also record ILS
+plainly and credit how Bill actually engaged. **Two things are true at once: Bill said *yes* to every
+hardening measure we asked for, and he was candid that almost none of his other sites ask for this much.**
+
+**What Bill offered / confirmed (he accommodated every ask):**
+- **Encryption:** stunnel, ~30 min to set up + 5 to test; he frames it as the customer's *choice* ("up to
+  you, if you want encryption") and says that with it on, **ALL traffic between the two systems is
+  encrypted**, not just the SIP2 session. We are electing to *require* it; he supports it at no charge.
+- **Connectivity:** endorsed our Peplink/SpeedFusion approach outright ("if it works for your bookmobile,
+  it should work for us"); takes a wired or WiFi WAN and "everything else."
+- **HTTPS on the staff pages:** yes, with **our** certificate (he can't issue one for us — reasonably, it
+  would look like spoofing); ~1 hr to install/test.
+- **Access restriction:** can **limit the staff pages to certain LAN IPs**, suggested **VLANs**, supports a
+  **self-signed cert** in a closed-network model, and explicitly offered the **reverse-proxy** path so we
+  do our own auth/MFA in front.
+- **MFA:** has a working **OAuth/MFA** implementation (built for Academic sites) he will extend to the
+  admin screen "if you really want to go down that path."
+- **Remote support:** a **free Splashtop account** for our IT, full encrypted VPN; honest that it uses
+  Splashtop's own MFA and **will not** integrate with our IdP.
+- **Catalog channel:** read/search only, no data writes of any kind.
+- **Testing:** he *recommends* it ("I always recommend testing, to ensure your theory is vetted") and
+  offered to **test holds pickup with our team** during install — so our **proof-of-integration gate is
+  something Bill himself advocates**, not something we are imposing on a reluctant vendor.
+
+**Trust-positive behavior:** Bill **proactively raised** the staff-page HTTP default ("this is a good time
+to bring up") rather than letting us discover it, and was upfront about what Splashtop cannot do.
+Volunteering the weak spot is the opposite of overselling, and it is a reason to extend reasonable trust.
+
+**The candor that matters most (Derek's read is right):** Bill told us plainly that we are an outlier:
+- *"We have never had anyone ask us for challenge/response authentication for the Administration screen."*
+- *"Almost none of our current sites encrypt the staff web pages (the Academics do)."*
+
+**How to read that honestly — both directions:**
+- *In ILS's favor:* it shows Bill is not overpromising; the hardening we want is **achievable** on their
+  platform, and he makes a fair argument that the **local dummy-card admin model is itself low-risk**
+  ("nothing to protect" — the card has no ILS connection). His typical sites run lighter because the device
+  genuinely exposes little (no PII on the staff pages, strictly-local admin).
+- *The caution it implies:* the **hardened configuration we are asking for is not their well-trodden
+  path.** Most of their installs do not encrypt staff pages, gate the admin screen, or lock egress — so the
+  Tier-2 build is, for them as well as us, somewhat **bespoke / first-time**. That is a mild **execution
+  risk** (config we would be doing together for the first time), **not a product deficiency.** It reinforces
+  why the **live proof-of-integration test is the right gate** — we would be validating a setup neither side
+  runs by default.
+
+**Net (fair to ILS):** nothing Bill described is evasive or contradictory, and he agreed to everything we
+asked. Our remaining caution (next section) is **not "we don't believe Bill."** It is that (a) his answers
+are the vendor's account of his own system, (b) the stricter-than-normal configuration he is offering us is
+**largely untested in the field**, and (c) we would be the ones asking him to lock the device down further
+than he ever has. **That is a reason to verify, not to distrust.**
+
 ## Concerns we are keeping visible (not closed by vendor assurances) — 2026-06-18
 
 These stay in the write-up deliberately. Most of our "resolved" items rest on the **vendor's description of
