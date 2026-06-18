@@ -33,9 +33,15 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
    matter handled with the Director separately, **not** in this memo).
 
 3. **The core security fact, in plain English.** Patron **barcode + PIN must be encrypted in transit**;
-   that is **non-negotiable** and is delivered the same way in both models via **stunnel** (Clarivate
-   stands up the stunnel endpoint at no cost; both ends support it; no cleartext fallback inside the
-   tunnel; enforced as a go-live gate with a live holds-pickup test).
+   that is **non-negotiable** and is delivered the same way in both models via **stunnel**. *Termination,
+   stated precisely:* the **stunnel client runs on the kiosk** and connects to **Clarivate's stunnel
+   server** — so SIP2 is encrypted from the moment it leaves the kiosk application; cleartext barcode/PIN
+   exists only transiently **inside the kiosk's own process**, never on any wire or LAN segment. Under
+   Model 2, **SpeedFusion is an independent outer transport layer** (device→FusionHub) that the already-
+   stunnel-encrypted SIP2 rides inside — the two layers stack, neither replaces the other. Clarivate
+   stands up its stunnel endpoint at no cost; both ends support it; no cleartext fallback inside the
+   tunnel; enforced as a **go-live gate** with a live holds-pickup test and verification that **no
+   plaintext SIP listener is reachable** from the kiosk.
 
 4. **The two models — framed as floor vs. standard.**
    - **Model 1 — vendor-default ("it works," lower security).** Device on its own cellular line with a
