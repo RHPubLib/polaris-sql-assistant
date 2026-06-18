@@ -78,5 +78,19 @@ Derek's correction → became the staff-portal OPEN DECISION.
 endpoint (Peplink↔Clarivate), never bridged to RHPL internal, Clarivate (not RHPL) hosts the data → **no
 RHPL-internal pivot surface.** This *satisfies* the kernel of Gemini's R1 concern (isolation) by design.
 **Side effect:** the earlier RHPL-reverse-proxy/FIDO2 staff-portal idea would reintroduce an RHPL-internal
-touchpoint → kicked to an **OPEN DECISION** (B1 on-device+vendor-portal recommended; B2 DMZ-proxy; B3
-device IP-restrict). Confirming B1 with Derek before resuming the loop.
+touchpoint → kicked to an OPEN DECISION.
+
+### Derek clarification #2 (2026-06-18) — two access surfaces; Tier 2 = layer to taste
+
+Resolved the OPEN DECISION as a **hybrid by access surface**, not one global choice:
+- **Physical loading (loader card): keep simple, no added security** — role-limited courier card, local-
+  only, can't touch records/patron data. Don't gate it.
+- **Remote admin panel: gate via Google** (OAuth/IAP, **cloud layer, not RHPL-internal** → still "nothing
+  back to RHPL"); routes: our Google-fronted proxy *or* Bill's existing Academic OAuth/MFA. Open impl
+  detail: how the Google gate reaches the device with **no inbound open port**.
+- **Tier 2 (= Model 2) is explicitly "layer to taste"** — Bill confirms each layer is independent; RHPL
+  can stack stunnel+cert / SpeedFusion / isolated endpoint / Google-auth admin / optional HTTPS / RMM-MFA
+  without making restock harder.
+
+Plan updated (replaced OPEN DECISION with "Two distinct access surfaces"; added layering list to Model 2).
+Adversarial loop **paused at Derek's request** to discuss Bill's details / Tier 2 before resuming.
