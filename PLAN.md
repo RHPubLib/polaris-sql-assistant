@@ -192,4 +192,18 @@ evaluation of other kiosk vendors.
 **Standing reservation (recorded, not acted on now):** were RHPL leading a from-scratch procurement, the
 preference would be a **PAPI-only** product (checkout, holds, and patron *My Account* portal all over
 PAPI, no SIP2). This evaluation assesses the kiosk OT brought forward; it is not a market survey, and the
-SIP2 dependency is its main structural limitation.
+SIP2 dependency is its main structural limitation. **A concrete alternative exists:** **Lyngsoe** runs all
+traffic through **PAPI (no SIP2)**, is larger, and has **known Polaris customers** — but (per a secondhand
+Phoenix-area Polaris source, not Lyngsoe directly) its **PAPI-for-hold-lockers is not yet in production**
+(we'd be first; PAPI shipped only for its "Library of Things" line in March 2026), the browsable option
+rides a **partner** locker vendor, and its **staff MFA is still in development**. So Lyngsoe proves the
+PAPI path exists in the market, but for *hold-locker + PAPI* specifically it is **as unproven as ILS** —
+it's an argument for a fuller comparative procurement, not a readier drop-in. (Full detail in the eval doc.)
+
+**Concerns kept visible (memo includes these verbatim-in-spirit — see eval doc "Concerns we are keeping
+visible"):** (1) load-bearing security items are *vendor assertions, not verified behavior* → make
+verification a go-live gate; (2) "no PII at all" can't be literally true for a holds locker → pin down what
+patron data is actually on the box; (3) vendor-managed Windows box + vendor remote SYSTEM access + local
+SIP2 creds + no track record = the unfixable residual; (4) integration unproven to us + no hosted-Clarivate
+reference yet; (5) SIP2 + bolted-on stunnel is fragile by construction. These are presented as honest
+caveats, not as reasons the technical "yes" fails.
