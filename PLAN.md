@@ -127,6 +127,20 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 - **R6 — Board misreads scope** as a competitive "best kiosk" recommendation or as a reliability
   endorsement. *Mitigation:* scope disclaimer up front; "this vendor's product is technically workable"
   wording.
+- **R7 — Lateral movement / VPN blast radius.** Putting an untrusted vendor Windows box on our
+  SpeedFusion VPN risks pivot into RHPL internal systems or abuse of our Clarivate-allowlisted IP.
+  *Mitigation:* kiosk on an **isolated segment**; Peplink/FusionHub **egress ACL** locks it to *only* the
+  Clarivate stunnel endpoint (+ RMM); no route to other RHPL infrastructure; FusionHub is not shared-trust.
+- **R8 — Local bypass of the reverse proxy.** The staff portal runs *on the kiosk*, so on-device or
+  Splashtop access bypasses our proxy + FIDO2 entirely — the proxy only secures the network path, not the
+  box. *Mitigation:* don't overstate the control (done in the memo wording); rely on the on-device
+  **local-card admin model** for physical access and R3 mitigations for the vendor plane; the proxy's job
+  is strictly removing **public-internet exposure** of a default-HTTP page and gating remote staff access.
+
+**Residuals we will NOT hide from the board:** (1) the vendor remote plane (R3) can control a device that
+transacts our patron data; (2) vendor reliability/track record is unproven by RHPL (R4); (3) the product
+is SIP2-dependent, not PAPI-only (R5). Model 2 reduces *network* exposure and blast radius; it does not
+turn a vendor-managed appliance into an RHPL-trusted endpoint, and the memo says so.
 
 ## Scope
 
