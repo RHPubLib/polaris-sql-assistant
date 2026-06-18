@@ -22,6 +22,16 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 - Honest positioning: this is **"is *this* vendor's kiosk technically workable,"** *not* "this is the
   best kiosk on the market." (See Scope — PAPI-only reservation.)
 
+**Basis-of-confidence statement (load-bearing — say it out loud, and it is NOT a recommendation against
+the product).** Everything we know about how this device behaves and secures data comes from **the vendor
+(Bill/ILS) describing his own system.** None of it has been independently verified by RHPL, by a third
+party, or by reference customers (we have **no references yet**). We are **taking the vendor at his word**
+that he understands his own system's logic and is representing it honestly. That is a statement about *the
+basis of our confidence*, not a knock on the product: **we are not telling OT to reject this locker.** We
+*are* saying the technical "yes" is **"yes, per the vendor, pending verification"** — which is exactly why
+a hands-on **proof-of-integration test (packet capture + test patron) is recommended as a go-live gate**,
+and why references (esp. a hosted-Clarivate site) matter.
+
 ## Approach — what the memo says, in order
 
 1. **Bottom line up front.** Technically feasible with our Polaris; RHPL recommends purchase *from a
