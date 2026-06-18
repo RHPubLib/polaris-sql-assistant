@@ -309,6 +309,68 @@ AutoLend --Ethernet--> Peplink router (2 SIMs, 2 carriers)
 
 ---
 
+## Bill reply #2 (2026-06-18) — second follow-up answered; deployment models for the board
+
+Bill answered the second follow-up. The remaining **technical** gates are cleared, so we can present the
+board a clean **two-model choice** rather than a list of open questions.
+
+What his answers resolved:
+- **Ethernet / WiFi WAN accepted (#17 RESOLVED).** *"We can take a wired WAN connection or a WiFi WAN
+  connection, and everything else."* This unblocks the Peplink design, and he endorses it: *"If it works
+  for your bookmobile, it should work for us too… the only difference would be the stunnel setup."*
+- **stunnel (#14).** ~30 min to configure, 5 to test; both ends support it; toggled by a background
+  service; he insists on a **live holds-pickup test** ("every site's holds can be different").
+- **Staff web portal (#13 RESOLVED).** Defaults to **HTTP**, but **no PII is stored or displayed at all**.
+  Hardening options: our cert → HTTPS (~1 hr, we supply the cert), IP-restrict, self-signed cert in a
+  closed network, or front it with **our own auth/MFA proxy**. Every option except a public cert assumes a
+  **LAN / closed network** — which only **Model 2** provides.
+- **Admin screen (#16).** On-device, **local-only** card/number (can be a dummy card unconnected to the
+  ILS), role-scoped; nothing leaves the box. OAuth/MFA available (from their Academic sites) if we ever
+  want it. Web-portal SSO + FIDO2 is achieved via our proxy under Model 2.
+- **RMM = Splashtop (#15 RESOLVED).** Cloud-brokered (outbound, no inbound port), full encrypted VPN, free
+  IT account, its **own MFA** (not our IdP). It is a vendor cloud **control plane** (can fully control the
+  Win10 box) even though the **data path** has no vendor cloud. Take the free account for visibility;
+  document it.
+- **Catalog channel (#18 RESOLVED).** *"Read/search only for item/catalog records. No calls to modify any
+  data of any kind."*
+- **References (#8).** Bill expects to hear back with names **today (6/18)**; chasing.
+
+**Clarivate (understood — no open question remaining for the design):** we provide a **dedicated/static
+source IP** for their allowlist; their **stunnel setup is no-cost**; and they will **assist standing up the
+tunnel between our Peplink/FusionHub edge and their SIP endpoint** — that is where the encrypted tunnel
+terminates. Only residual is generic **lead time**.
+
+### The two models we'll put to the Director and OTLB
+
+**Model 1 — Vendor-default ("it works," lower security; *not* RHPL's normal standard).**
+- Connectivity: the unit's **own cellular line** with a **purchased static carrier IP** (required for
+  Clarivate's allowlist). Single carrier = single point of failure.
+- SIP2 patron barcode/PIN encrypted via **stunnel** (baseline; free on both ends).
+- **Staff HTTP portal left at vendor default** — not locked to RHPL standards (no reverse proxy, no
+  FIDO2). Bounded by Bill's "no PII displayed," but below what we would normally deploy.
+- RMM via Splashtop. **No RHPL gear, no SpeedFusion VPN, no redundancy.**
+- Cost: monthly **static carrier IP + one cellular line**; **no** Peplink hardware/software.
+
+**Model 2 — RHPL-managed, locked down (RECOMMENDED).**
+- Path: **AutoLend → Ethernet → Peplink → SpeedFusion VPN → FusionHub (our static IP) → stunnel →
+  Clarivate.** SpeedFusion encrypts the entire device→RHPL path; **stunnel still rides inside** for the
+  SIP2 session and the FusionHub→Clarivate leg (defense in depth).
+- The **static IP Clarivate allowlists is our FusionHub's**, not a churning cellular IP; Clarivate assists
+  standing up the tunnel at our edge.
+- **Staff portal locked to RHPL standards:** reachable only through our network, behind our **reverse proxy
+  with Google OAuth + YubiKey FIDO2**; never exposed to the public internet.
+- Availability: **one cellular SIM, or two different carriers bonded** via SpeedFusion for best
+  uptime/redundancy.
+- Cost: **Peplink hardware + software/license + monthly fee for the cellular line(s)** (two lines if
+  dual-carrier).
+
+Both models satisfy the non-negotiable — encrypted patron credentials in transit. The difference is
+**staff-portal hardening, network control/visibility, and redundancy**, all of which Model 2 adds, at the
+cost of RHPL gear + (optionally) a second cellular line. **Scoping (#9) and restock cadence (#10) are
+deferred — not material to this decision right now.**
+
+---
+
 ## Open items tracker
 
 | # | Item | Owner | Status |
