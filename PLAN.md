@@ -40,8 +40,10 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
    Model 2, **SpeedFusion is an independent outer transport layer** (device→FusionHub) that the already-
    stunnel-encrypted SIP2 rides inside — the two layers stack, neither replaces the other. Clarivate
    stands up its stunnel endpoint at no cost; both ends support it; no cleartext fallback inside the
-   tunnel; enforced as a **go-live gate** with a live holds-pickup test and verification that **no
-   plaintext SIP listener is reachable** from the kiosk.
+   tunnel; enforced as a **go-live gate** with a live holds-pickup test, verification that **no
+   plaintext SIP listener is reachable** from the kiosk, and confirmation that the kiosk's stunnel client
+   **validates Clarivate's server certificate** (`verifyPeer`/`verifyChain`) — encryption without cert
+   verification is still MITM-able, so cert validation is part of the gate, not optional.
 
 4. **The two models — framed as floor vs. standard.**
    - **Model 1 — vendor-default ("it works," lower security).** Device on its own cellular line with a
