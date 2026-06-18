@@ -24,6 +24,11 @@ Remaining work is one-time setup plus a physical restocking cadence that needs a
 **On a purely technical basis, this unit will work for Oakland Township** — subject to confirming encrypted
 SIP2 transport and the open Clarivate/vendor items below.
 
+> **Update 2026-06-18 — both vendors answered the two gating questions; see the dedicated section below.**
+> Encryption path is settled (stunnel, free, both ends support it), static IP is now a confirmed hard
+> requirement (the segmentation plan survives), and Bill's reply surfaced one **new** item: an inbound
+> staff-web-interface exposure on the device's public cellular IP.
+
 ### Scorecard vs. original red flags
 
 | Red flag | Verdict |
