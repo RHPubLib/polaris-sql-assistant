@@ -71,9 +71,15 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
        services.
      - **stunnel with certificate verification** — see §3; encryption alone isn't enough, the kiosk's
        stunnel client must validate Clarivate's server cert (`verifyPeer`/`verifyChain`) to prevent MITM.
-     - **Staff portal — see OPEN DECISION below.** The portal is served *locally on the kiosk*; how (or
-       whether) staff get a remote path to it is the one item Model 2 still has to settle without
-       reintroducing an RHPL-internal touchpoint.
+     - **Two access surfaces, treated oppositely** (see "Two distinct access surfaces"): physical
+       **loading stays simple** (role-limited loader card, no added security); the **remote admin panel is
+       gated via Google** (OAuth/IAP, cloud layer, not RHPL-internal).
+     - **Tier 2 is "layer to taste."** Bill confirms each layer is independently available, so RHPL can
+       stack as much defense-in-depth as it wants without making the loading task harder: (1) stunnel +
+       cert-verify on SIP2, (2) SpeedFusion dedicated tunnel, (3) isolated tunnel endpoint, (4) Google
+       auth on the remote admin panel, (5) optional HTTPS on the staff page (our cert / self-signed),
+       (6) Splashtop RMM with its own MFA + our IT account for audit. None of these touches the loader-card
+       restock flow.
      - **Operating Model 2 commits RHPL to being the administrator of that connectivity** (ongoing
        ownership of the Peplink + tunnel endpoint) — surfaced as the Director's decision to accept.
 
