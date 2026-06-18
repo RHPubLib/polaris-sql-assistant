@@ -55,20 +55,25 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
      internet → Clarivate (stunnel server).` The stunnel-encrypted SIP2 rides **inside** the SpeedFusion
      tunnel (two stacked layers). The allowlisted static IP is **our FusionHub's** (cellular IPs
      underneath can churn). Availability: one cellular SIM, or **two carriers bonded** for redundancy.
-     Three lockdowns that distinguish Model 2:
-     - **Egress isolation (blast-radius control).** The kiosk is treated as an **untrusted device on its
-       own isolated segment**; Peplink/FusionHub firewall rules restrict its egress to **only the
-       Clarivate stunnel IP:port** (plus the vendor RMM endpoint) — **no route to any other RHPL internal
-       system**, and the FusionHub is not a shared-trust hub. A compromised kiosk cannot pivot inward or
-       abuse our trusted IP against anything but the one allowlisted Clarivate endpoint.
-     - **Staff portal — network-path hardening (stated honestly).** The portal is served *locally on the
-       kiosk*. Our reverse proxy + Google OAuth + YubiKey FIDO2 secures the **remote/network path** staff
-       use to reach it and keeps it **off the public internet**; it does **not** secure the box against
-       someone with on-device or vendor-remote (Splashtop) access — that's governed by the vendor remote
-       plane (R3) and the on-device local-card admin model, not by our proxy. We do not claim the proxy
-       "locks down the portal" absolutely; it removes public/internet exposure of a default-HTTP page.
-     - **Operating Model 2 commits RHPL to being the administrator of that network path** (ongoing
-       ownership/responsibility) — surfaced as the Director's decision to accept.
+     Distinguishing properties of Model 2:
+     - **Dedicated, isolated tunnel endpoint — nothing comes back to RHPL.** The SIP2 path is a
+       **dedicated IP / SpeedFusion tunnel built Peplink ↔ Clarivate**; the endpoint exists *only* to
+       present the allowlisted static IP and pass SIP2 to Clarivate. It is **never bridged to RHPL
+       internal/production systems**, and **Clarivate (not RHPL) hosts the Polaris data.** So the device's
+       only privileged destination is Clarivate — the same place our Polaris already lives, behind
+       Clarivate's controls. There is **no RHPL-internal pivot surface.**
+     - **The box keeps normal WAN for its own OS needs.** Per Bill ("let the network layer work
+       normally"), the Windows box uses ordinary cellular WAN for DNS/NTP/time and vendor-managed
+       OS/AV updates (via the RMM channel); only the **SIP2 session** rides the dedicated stunnel tunnel.
+       We are *not* imposing a single restrictive egress ACL that would starve the OS of time/name/update
+       services.
+     - **stunnel with certificate verification** — see §3; encryption alone isn't enough, the kiosk's
+       stunnel client must validate Clarivate's server cert (`verifyPeer`/`verifyChain`) to prevent MITM.
+     - **Staff portal — see OPEN DECISION below.** The portal is served *locally on the kiosk*; how (or
+       whether) staff get a remote path to it is the one item Model 2 still has to settle without
+       reintroducing an RHPL-internal touchpoint.
+     - **Operating Model 2 commits RHPL to being the administrator of that connectivity** (ongoing
+       ownership of the Peplink + tunnel endpoint) — surfaced as the Director's decision to accept.
 
 5. **What's confirmed (confidence anchors).** Read/search-only catalog access (no patron/item writes);
    no patron data stored on the device (fail-closed "Out of Service", offline mode off); native Polaris
