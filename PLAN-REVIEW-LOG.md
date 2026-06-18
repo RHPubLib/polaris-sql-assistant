@@ -94,3 +94,18 @@ Resolved the OPEN DECISION as a **hybrid by access surface**, not one global cho
 
 Plan updated (replaced OPEN DECISION with "Two distinct access surfaces"; added layering list to Model 2).
 Adversarial loop **paused at Derek's request** to discuss Bill's details / Tier 2 before resuming.
+
+### Derek additions #3 (2026-06-18) — keep concerns 1–5; add Lyngsoe (PAPI alternative)
+
+- **Concerns 1–5 stay in the write-up** (vendor-assertion-not-verified; "no PII" implausible for a holds
+  locker; vendor remote-plane residual; unproven-to-us + no hosted-Clarivate ref; SIP2+stunnel fragility).
+  Added as "Concerns we are keeping visible" in the eval doc; summarized in PLAN scope + Approach §7b.
+- **Lyngsoe** added as a concrete **PAPI-native (no SIP2)** alternative — larger vendor, known Polaris
+  customers. Caveats (secondhand via a Phoenix-area Polaris library, not Lyngsoe directly): hold-locker
+  PAPI **not yet in production** (we'd be first; PAPI shipped only for "Library of Things" line, Mar 2026),
+  browsable option via a **partner** vendor, **staff MFA still in development**. Framed as "PAPI path
+  exists in the market" → argues for fuller comparative procurement, NOT a readier drop-in. Added as eval-
+  doc section + PLAN standing-reservation extension.
+
+Loop still paused; material design + content changes since Round 2 → a fresh adversarial round is warranted
+when Derek says go.
