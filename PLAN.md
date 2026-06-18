@@ -112,9 +112,11 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 - **R1 — RHPL silently inherits an OT operational obligation.** Model 2 = RHPL on the pager for OT's
   device link/proxy. *Mitigation:* memo states the admin-ownership commitment explicitly; it is the
   Director's decision to accept (locked Q3).
-- **R2 — stunnel not actually enforced → cleartext PIN.** Polaris has no native SIP TLS; the non-stunnel
-  state is cleartext. *Mitigation:* stunnel is a contractual **go-live gate** + live holds-pickup test;
-  verify no plaintext SIP listener is reachable.
+- **R2 — stunnel not actually enforced, or enforced without cert validation → cleartext/MITM'd PIN.**
+  Polaris has no native SIP TLS; the non-stunnel state is cleartext, and an stunnel that doesn't validate
+  the server cert is encrypted-but-MITM-able. *Mitigation:* stunnel is a contractual **go-live gate** +
+  live holds-pickup test; verify no plaintext SIP listener is reachable **and** that the client enforces
+  `verifyPeer`/`verifyChain` against Clarivate's cert/CA.
 - **R3 — Vendor remote plane + locally-stored SIP2 creds = the sharpest residual risk.** The kiosk is a
   **vendor-managed Windows box** that must hold Polaris **SIP2 terminal credentials locally**, and the
   vendor retains full remote control via **Splashtop** (its own MFA, not our IdP). A Splashtop/vendor
