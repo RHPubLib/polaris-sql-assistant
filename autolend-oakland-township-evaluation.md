@@ -371,6 +371,59 @@ deferred — not material to this decision right now.**
 
 ---
 
+## Concerns we are keeping visible (not closed by vendor assurances) — 2026-06-18
+
+These stay in the write-up deliberately. Most of our "resolved" items rest on the **vendor's description of
+its own closed system**; a fast, articulate vendor thread is not the same as verified behavior. Ranked:
+
+1. **Load-bearing claims are vendor assertions, not observed behavior.** "No PII stored," "no cleartext
+   fallback," "read/search-only PAPI, no writes," "offline-off = nothing written," "loader role can't
+   escalate" — all are Bill describing his own box. **Treat as *claimed*, not *confirmed*, until verified**
+   (packet capture + a test patron, watching the live SIP2/PAPI traffic). This should be a written
+   **go-live gate**, not a leap of faith.
+2. **"No PII at all" does not survive first principles for a *holds* locker.** A holds locker must know
+   *which patron's* item sits in *which bin* to release it correctly — so the device necessarily handles
+   patron-identifying hold data. The claim is almost certainly scoped to the *staff web pages*, not the
+   device itself. **Pin down exactly what patron data lives on the box, where, for how long, and whether
+   it is encrypted at rest.**
+3. **Vendor-managed Windows box + vendor remote SYSTEM access + locally-stored SIP2 creds + no RHPL track
+   record with this vendor.** The residual we cannot fully fix (R3): a vendor/Splashtop compromise yields
+   SIP2 creds and a pre-authenticated path to patron data. Least-privilege + audit reduce it, not remove it.
+4. **The exact integration is unproven *to us*, and no hosted-Clarivate reference is in hand.** We have
+   never watched this product run in the specific Clarivate-hosted-Polaris-over-stunnel configuration we
+   are proposing, from a vendor we have never worked with. If references don't arrive — or none are
+   hosted-Clarivate — that gap stands directly under the recommendation.
+5. **The security model is fragile by construction.** Polaris has no native SIP TLS, so the *entire*
+   patron-credential protection is a bolted-on stunnel proxy both ends must configure correctly, with a
+   cleartext fallback if misconfigured. It works, but a PAPI-only design would not have this failure mode.
+
+## Alternative vendor noted — Lyngsoe (PAPI-native, no SIP2) — 2026-06-18
+
+Recorded for the Director/board because it directly addresses our **standing reservation** (we'd prefer a
+PAPI-only product over SIP2). **At least one alternative — Lyngsoe — can run all traffic through PAPI, with
+no SIP2 tunneling.** Lyngsoe is a large, established locker vendor with **known Polaris libraries** running
+its hardware — a real track-record advantage over ILS. **Sourcing caveat:** most detail below is
+**secondhand via a Phoenix-area Polaris library (security-focused), not confirmed by Lyngsoe to us
+directly.**
+
+What we've been told (via that Polaris library):
+- **Two hardware lines.** Lyngsoe's own model is **hold-lockers only**; a **separate partner locker
+  vendor** provides **"Library of Things" (LoT)** lending — staff stage items for **browsable checkout**,
+  patrons select and check out directly (reportedly glass / mergeable doors for flexible sizes). So the
+  browsable/vending capability we'd want comes via that **partner**, not Lyngsoe's own hold-locker unit.
+- **PAPI maturity is the catch.** PAPI support **launched only this past March (2026), and only for LoT
+  customers.** **No one is yet running Lyngsoe *hold lockers* over PAPI** — that library would be the
+  **first**. They saw an in-person Lyngsoe PAPI demo (Feb 2026) and hope to move their hold lockers to
+  PAPI "soon." So PAPI-for-holds is **real but not production-proven** — not a drop-in mature option.
+- **Staff auth: same gap as ILS.** Lyngsoe currently uses **local accounts hosted by Lyngsoe**, with
+  **MFA still in development** ("soon"); that library volunteered to partner on MFA setup/testing.
+
+**Net:** Lyngsoe is a credible, larger, Polaris-proven, PAPI-capable alternative that fits our protocol
+preference — but for the **hold-locker + PAPI** combination specifically it is **as unproven as ILS**, the
+browsable option rides a partner vendor, and its staff MFA has also not shipped. It belongs in the
+write-up as evidence that a PAPI-only path **exists in the market** (reinforcing that a fuller procurement
+should compare vendors) — **not** as a turnkey, readier-than-ILS substitute for this specific use case.
+
 ## Open items tracker
 
 | # | Item | Owner | Status |
