@@ -153,11 +153,16 @@ The kiosk has **two different ways in**, and they get **opposite** treatment:
   Clarivate — i.e., potential patron-record scraping over SIP2. **Neither model eliminates this; it is
   inherent to any vendor-managed appliance** (true of Model 1 too). *Mitigations:* (a) provision the SIP2
   account at **least privilege** — only the operations the kiosk needs (checkout/holds), nothing broader;
-  (b) take the free IT Splashtop account for **visibility/audit** of vendor sessions; (c) the egress ACL
-  (R7) bounds what a compromised box can reach; (d) **state this plainly to the board** — a vendor plane
-  can control a device transacting our patron data, and that trust dependency is accepted, not hidden.
-  *Honest limit:* "document it" alone is not a fix; (a)+(c)+monitoring reduce blast radius but the trust
-  in the vendor's remote-access hygiene remains a real, named dependency.
+  (b) take the free IT Splashtop account for **visibility/audit** of vendor sessions; (c) **state this
+  plainly to the board** — a vendor plane can control a device transacting our patron data, and that trust
+  dependency is accepted, not hidden.
+  *Honest limit — do NOT overstate isolation:* the network isolation (R7) protects **RHPL internal**; it
+  does **not** bound **data exfiltration**. As long as the box has a normal internet WAN and the vendor
+  has remote access, a compromised box can read patron data over SIP2 and **exfiltrate it out its own
+  internet link** — our SpeedFusion/Clarivate isolation does nothing against that. Bounding exfiltration
+  would mean routing *all* box traffic through our Peplink under a default-deny egress allowlist (see §4
+  option) — heavy and brittle. Realistic posture: **least-privilege + audit + accept the residual**, not
+  "prevented." This is the single hardest thing we cannot engineer away.
 - **R4 — Vendor track record unproven; references (esp. hosted-Clarivate) not yet in hand.**
   *Mitigation:* flagged as out-of-scope + named as a pending item; board weighs separately.
 - **R5 — SIP2 dependency is a structural limitation** vs. a PAPI-only design. *Mitigation:* captured as
