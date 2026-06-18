@@ -62,8 +62,21 @@ blast radius) and R8 (local proxy bypass). Added a "residuals we will not hide f
 
 **Local (Qwen):** bare `VERDICT: APPROVED` again — low signal.
 
-**Revisions made:** egress ACL reworded to **default-deny + explicit allowlist** including DNS/NTP/
-Windows-Update/Defender/CRL-OCSP, with the deny target scoped to RHPL-internal lateral movement. Defined
-the reverse-proxy **ingress path** (kiosk-egress isolation vs. RHPL-initiated inbound over the tunnel;
-proxy-host-only ACL to the portal port). Added **stunnel cert-verification** to the go-live gate (Approach
-§3 + R2).
+**Revisions made (reconciled with Derek's correction below):** added **stunnel cert-verification** to the
+go-live gate (Approach §3 + R2). Reframed the egress story: the box keeps **normal cellular WAN** for its
+own OS/time/name/update needs (per Bill, "let the network layer work normally"); only the **SIP2 session**
+rides the dedicated stunnel tunnel — so Gemini's "ACL starves the OS" concern is avoided by *not* imposing
+a single restrictive ACL on the box. The reverse-proxy routing contradiction (Gemini #2) is superseded by
+Derek's correction → became the staff-portal OPEN DECISION.
+
+### Derek correction (2026-06-18, mid-Act-2)
+
+> "This won't EVER come back to RHPL. This will be a dedicated IP between the Peplink and Clarivate to
+> build the tunnel. Clarivate hosts our Polaris data and not us."
+
+**Effect:** R7 reframed from "lateral-movement risk" to a **design property** — dedicated isolated tunnel
+endpoint (Peplink↔Clarivate), never bridged to RHPL internal, Clarivate (not RHPL) hosts the data → **no
+RHPL-internal pivot surface.** This *satisfies* the kernel of Gemini's R1 concern (isolation) by design.
+**Side effect:** the earlier RHPL-reverse-proxy/FIDO2 staff-portal idea would reintroduce an RHPL-internal
+touchpoint → kicked to an **OPEN DECISION** (B1 on-device+vendor-portal recommended; B2 DMZ-proxy; B3
+device IP-restrict). Confirming B1 with Derek before resuming the loop.
