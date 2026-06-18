@@ -96,6 +96,11 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 7. **Open items (named, not hidden).** References pending — **note we are specifically still waiting on a
    hosted-Clarivate customer reference**; vendor reliability out of our scope and the board's to weigh.
 
+7b. **Honest caveats + the PAPI alternative.** Include the five "concerns kept visible" (above) so the
+   recommendation isn't oversold, and note **Lyngsoe** as a real PAPI-native alternative (with its own
+   not-yet-proven-for-holds caveat) — evidence the protocol preference is achievable in the market and an
+   argument for a fuller comparative procurement if OT wants one.
+
 8. **Director brief (separate from board memo).** RHPL's ongoing-ownership commitment under Model 2;
    cost structure; and Derek's standing reservation (below).
 
