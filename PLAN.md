@@ -93,6 +93,24 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 8. **Director brief (separate from board memo).** RHPL's ongoing-ownership commitment under Model 2;
    cost structure; and Derek's standing reservation (below).
 
+## OPEN DECISION — staff-portal access path (created by the "nothing comes back to RHPL" constraint)
+
+The staff portal is served *locally on the kiosk*. The earlier idea of fronting it with an **RHPL reverse
+proxy + FIDO2** would put an **RHPL-internal touchpoint** in the loop — which contradicts the dedicated/
+isolated, Clarivate-only design. Resolution options:
+- **(B1, recommended) On-device + vendor portal only.** Restocking is done at the kiosk via the **on-device
+  local-card admin screen**; any remote staff need goes through the **vendor Splashtop portal**. No RHPL
+  network path to the device at all → fully consistent with "nothing comes back to RHPL." Matches Bill's
+  note that most sites just use the on-device admin. Cost: we inherit the vendor-plane trust (R3) for
+  remote work and give up RHPL-IdP/FIDO2 on the portal — acceptable since the portal displays no PII.
+- **(B2) Isolated-DMZ proxy.** Keep an FIDO2 auth-proxy but place it in a dedicated DMZ alongside the
+  tunnel endpoint, never on an RHPL production LAN. Preserves RHPL-IdP control; adds a small isolated
+  RHPL-managed component (still not "RHPL internal," but not zero-footprint either).
+- **(B3) Device-side IP-restriction.** No proxy; the device restricts the portal to an allowlisted source
+  reachable only over the tunnel. Simpler, but weaker auth than B1's vendor MFA or B2's FIDO2.
+
+**Locked: B1** (per Derek 2026-06-18) unless changed.
+
 ## Tradeoffs (choices made, alternatives rejected)
 
 - **Option A (purchase vote, RHPL picks the model)** over presenting Model 1/Model 2 as a board-selectable
