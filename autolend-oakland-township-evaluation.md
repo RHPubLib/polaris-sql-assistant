@@ -525,3 +525,8 @@ should compare vendors) — **not** as a turnkey, readier-than-ILS substitute fo
 | 16 | Staff SSO via Google OAuth/OIDC or SAML + FIDO2 MFA; named accounts vs. shared | Bill (vendor) | **RESOLVED 6/18** — admin screen local-card only; web-portal FIDO2 via our proxy (Model 2) |
 | 17 | AutoLend accepts Ethernet WAN handoff (gates the Peplink design) | Bill (vendor) | **RESOLVED 6/18** — wired or WiFi WAN accepted; Peplink design endorsed |
 | 18 | Read-only PAPI content channel re-confirm (bib only, no patron/item writes) | Bill (vendor) | **RESOLVED 6/18** — read/search only, no writes of any kind |
+| 19 | stunnel **cert verification** (`verifyPeer`/`verifyChain`) in go-live gate | RHPL / Clarivate | **In design** — added to go-live gate (encryption w/o cert validation is MITM-able) |
+| 20 | Exfiltration bounding — **default-deny egress** on Peplink (device behind our WAN) | RHPL | **In design** — cleared via Bill's Ethernet-WAN answer; residual = allowed channels (esp. Splashtop) |
+| 21 | Remote admin gate — Google proxy over SpeedFusion, IP-restrict to proxy | RHPL | **Design confirmed by Bill's proxy email** — no agent on vendor box; vendor-stated until tested |
+| 22 | **Proof-of-integration test** (packet capture + test patron) as a go-live gate | RHPL / both vendors | **Recommended** — verifies the vendor-stated claims before sign-off |
+| 23 | New-for-RHPL build: FusionHub **dedicated static IP** + isolated endpoint + egress filter | RHPL | **Open** — components proven, topology new; scope/effort to confirm |
