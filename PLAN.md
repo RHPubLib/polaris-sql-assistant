@@ -118,14 +118,19 @@ The kiosk has **two different ways in**, and they get **opposite** treatment:
    card** (courier role can *only* add/remove material — cannot modify records, read patron data, or
    escalate; the card is a local dummy checked only by the box). Loading stays **low-friction — tap card,
    load, done.** We deliberately add nothing here; gating it would only hurt staff for no security gain.
-2. **Remote admin control panel — gate it ourselves via Google.** This is the surface worth securing.
-   RHPL puts **Google authentication in front of remote admin access** — delivered through **Google's
-   cloud layer (OAuth / Identity-Aware Proxy), NOT an RHPL-internal box**, so it does **not** reintroduce
-   an RHPL-internal touchpoint and stays consistent with "nothing comes back to RHPL." Two viable routes:
-   (a) our own Google-fronted proxy/IAP, or (b) leveraging **Bill's existing OAuth/MFA** (built for his
-   Academic sites). Implementation detail to confirm: how the Google-auth gate reaches the device's local
-   admin page **without an inbound open port** (outbound connector / broker + Google auth, or via the
-   vendor portal fronted by Google SSO).
+2. **Remote admin control panel — TARGET: gate via Google (RHPL's standard pattern), pending a
+   feasibility check we have NOT done.** RHPL's established way to gate staff web tools is **Cloud Run +
+   Identity-Aware Proxy**, grouped by Google identity (e.g. `group:it@rhpl.org`) — proven on the internal-
+   reports portal. **But that pattern fronts an RHPL-hosted Cloud Run app; here the admin page lives *on
+   the vendor's box*.** To put Google auth in front of it without an inbound open port, we need **one of**:
+   (a) the vendor permitting an **outbound broker/connector agent** on their managed Windows OS (IAP
+   connector / tunnel) → then IAP/OAuth in front, cloud layer, no RHPL-internal touchpoint; or (b)
+   leveraging **Bill's existing OAuth/MFA** (built for his Academic sites). **We have NOT verified the
+   vendor allows (a)** — so this control is a *target, not a confirmed capability*, and the memo must say
+   so. **If neither (a) nor (b) is permitted, the realistic fallback is the vendor's own Splashtop portal +
+   the on-device local-card admin** — i.e., we accept vendor-plane auth rather than RHPL/Google auth for
+   remote work. (We do hold a `*.rhpl.org` wildcard cert, so adding HTTPS to the staff page itself is
+   trivial whenever we want it.)
 
 ## Tradeoffs (choices made, alternatives rejected)
 
