@@ -78,8 +78,10 @@ and why references (esp. a hosted-Clarivate site) matter.
        the exfiltration worry).** Bill confirmed the AutoLend takes an **Ethernet WAN handoff** and to
        "let the network layer work normally" — meaning the device is **network-agnostic and sits entirely
        behind our Peplink with no independent uplink.** Every packet it sends crosses gear we own, so we
-       apply the **Peplink outbound firewall** (the same control we already run on the bookmobile/kids'
-       bus): **default-deny**, allow only Clarivate (over the tunnel) + Splashtop RMM + Windows
+       apply the **Peplink's built-in outbound firewall** — Peplink gear and SpeedFusion we already operate
+       (today we run it on the van/kids' bus for *bonded connectivity*, not egress filtering), here
+       configured **default-deny** for this device (a new config for us, not a new capability): allow only
+       Clarivate (over the tunnel) + Splashtop RMM + Windows
        Update/Defender/NTP/DNS/CRL-OCSP, and **log every flow**. The device won't fight this (that's Bill's
        "let the network layer work normally" point). The CDN/rotating update+RMM endpoints are handled with
        **domain-based outbound rules** or **central filtering at the FusionHub** — normal SD-WAN admin for
