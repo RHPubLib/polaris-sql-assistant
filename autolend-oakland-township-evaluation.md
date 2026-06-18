@@ -377,6 +377,66 @@ deferred — not material to this decision right now.**
 
 ---
 
+## Model 2 — hardened security design (after dual-model review + reconciliation with Bill) — 2026-06-18
+
+This is Model 2 as it stands after adversarial review (Gemini + local model) and reconciliation with Bill's
+emails and Peplink capability. Written to be honest about what is *controlled*, what is *residual*, and
+what is *proven vs. new*.
+
+**Path:** `AutoLend (stunnel client) → Ethernet → Peplink → SpeedFusion VPN → FusionHub (our static IP) →
+internet → Clarivate (stunnel server).`
+
+**1. Encrypted SIP2 — stunnel client on the kiosk, with certificate verification.** The stunnel client
+runs **on the kiosk** and connects to Clarivate's stunnel server, so the patron barcode/PIN is encrypted
+the moment it leaves the kiosk app — cleartext exists only transiently *inside* the kiosk process, never on
+a wire. SpeedFusion is an **independent outer layer** the encrypted SIP2 rides inside (two stacked layers).
+**Go-live gate:** live holds-pickup test; no plaintext SIP listener reachable; and the client **validates
+Clarivate's certificate** (`verifyPeer`/`verifyChain`) — encryption without cert validation is still
+MITM-able.
+
+**2. Nothing comes back to RHPL internal (scoped honestly).** The SpeedFusion tunnel is a dedicated path
+Peplink ↔ Clarivate; the endpoint is dedicated and **never bridged to RHPL internal/production**, and
+Clarivate (not RHPL) hosts the data. Over the tunnel a compromised kiosk reaches only Clarivate. **This is
+a no-RHPL-pivot claim, NOT a no-exfiltration claim** (see #3).
+
+**3. We own all egress → exfiltration is bounded and logged (not eliminated).** Bill confirmed the AutoLend
+takes an **Ethernet WAN handoff** and to "let the network layer work normally" — so the device has **no
+independent uplink**; every packet crosses our Peplink. We enforce a **default-deny outbound firewall**
+(allow Clarivate via tunnel + Splashtop RMM + Windows Update/Defender/NTP/DNS/CRL-OCSP; log all).
+**Residual:** the allowed channels — above all **Splashtop**, the likely compromise vector — are themselves
+possible exfil paths, so a vendor-plane compromise could still leak via a permitted, logged channel. So:
+**bounded + logged, not zero.** (Model 1, on its own carrier link with no RHPL firewall in path, is
+unbounded — a concrete reason it is below standard.)
+
+**4. Two access surfaces, treated oppositely.**
+- **Physical loading (loader card) — keep simple, no added security.** Bill's role-limited loader/courier
+  card can only add/remove material — cannot modify records, read patron data, or escalate; it is a local
+  dummy checked only by the box. Loading = tap card, load, done. Gating it would hurt staff for no gain.
+- **Remote admin panel — gate via our Google-authed proxy; confirmed by Bill's email, no agent on the
+  vendor box.** Bill offered the proxy path: *"setup a proxy to the staff web pages … authenticate,
+  vet/challenge/MFA … then allow the connection through,"* and *"limit those to allow only certain LAN
+  IPs."* Design: staff → our public **Google OAuth/IAP + FIDO2** proxy (our internal-reports pattern) →
+  reaches the device's staff page over the SpeedFusion tunnel → device/Peplink **IP-restricts it to our
+  proxy only.** No vendor-box agent, no public inbound port on the device. We hold a `*.rhpl.org` wildcard
+  cert, so HTTPS is trivial.
+
+**5. Vendor remote plane (Splashtop) — the residual we cannot fully fix.** Vendor-managed Windows box +
+vendor remote SYSTEM access + locally-stored SIP2 creds: a vendor/Splashtop compromise yields SIP2 creds +
+a pre-authed path to patron data. Mitigations: least-privilege SIP2 (checkout/holds only), egress filtering
+(#3), and take the **free IT Splashtop account for audit**. Inherent to any vendor-managed appliance (Model
+1 too); we name it, not hide it.
+
+**6. Tier 2 = layer to taste.** Each layer is independent (Bill confirms), so RHPL can stack
+defense-in-depth — stunnel+cert / SpeedFusion / isolated endpoint / Google-auth admin / egress filtering /
+optional HTTPS / RMM-MFA + audit — **without making the loader-card restock flow any harder.**
+
+**Maturity (honest — proven vs. new for RHPL):** the bonded dual-SIM SpeedFusion *connectivity* is proven
+here (van/kids' bus, used only for connection redundancy); the **dedicated static IP via FusionHub, the
+isolated tunnel endpoint, and egress filtering are NEW deployments for RHPL** — same gear/skills, new
+assembly. **Components proven; topology new.** Don't present the exact topology as battle-tested.
+
+---
+
 ## Concerns we are keeping visible (not closed by vendor assurances) — 2026-06-18
 
 These stay in the write-up deliberately. Most of our "resolved" items rest on the **vendor's description of
