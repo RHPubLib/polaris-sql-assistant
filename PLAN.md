@@ -67,6 +67,16 @@ and why references (esp. a hosted-Clarivate site) matter.
      internet → Clarivate (stunnel server).` The stunnel-encrypted SIP2 rides **inside** the SpeedFusion
      tunnel (two stacked layers). The allowlisted static IP is **our FusionHub's** (cellular IPs
      underneath can churn). Availability: one cellular SIM, or **two carriers bonded** for redundancy.
+
+     **Maturity check (honest — what's proven vs. new for RHPL):** the **bonded dual-SIM SpeedFusion
+     connectivity layer is proven here** — but only as we use it *today* on the van/kids' bus: to keep
+     staff *connected* (link aggregation/failover). **We do NOT run dedicated/static public IPs on those
+     devices today.** So the load-bearing new pieces of Model 2 are (a) standing up a **FusionHub with a
+     dedicated static public IP** for Clarivate's allowlist, (b) a **dedicated/isolated tunnel endpoint**,
+     and (c) **default-deny egress filtering** — all within our existing gear and skills, but **new
+     deployments for us, not things we operate in production now.** Don't tell the board this exact topology
+     is battle-tested here; tell them the *components and skills* are, and the *assembly* is new.
+
      Distinguishing properties of Model 2:
      - **Dedicated, isolated tunnel endpoint — nothing comes back to RHPL.** The SIP2 path is a
        **dedicated IP / SpeedFusion tunnel built Peplink ↔ Clarivate**; the endpoint exists *only* to
