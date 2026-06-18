@@ -132,10 +132,13 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 - **R6 — Board misreads scope** as a competitive "best kiosk" recommendation or as a reliability
   endorsement. *Mitigation:* scope disclaimer up front; "this vendor's product is technically workable"
   wording.
-- **R7 — Lateral movement / VPN blast radius.** Putting an untrusted vendor Windows box on our
-  SpeedFusion VPN risks pivot into RHPL internal systems or abuse of our Clarivate-allowlisted IP.
-  *Mitigation:* kiosk on an **isolated segment**; Peplink/FusionHub **egress ACL** locks it to *only* the
-  Clarivate stunnel endpoint (+ RMM); no route to other RHPL infrastructure; FusionHub is not shared-trust.
+- **R7 — No pivot surface into RHPL (design property, not a residual).** The reviewer raised lateral
+  movement from an untrusted vendor box on our VPN. **Per design this cannot reach RHPL:** the tunnel is a
+  **dedicated IP built Peplink ↔ Clarivate**, the endpoint is **dedicated and never bridged to RHPL
+  internal/production**, and **Clarivate hosts the Polaris data, not RHPL.** A compromised kiosk reaches
+  only Clarivate's allowlisted endpoint (where our data already lives, under Clarivate's controls). The
+  control that *keeps* this true: the tunnel endpoint stays dedicated/single-purpose and is never bridged
+  onto an RHPL LAN — that is the one thing to hold the line on during build.
 - **R8 — Local bypass of the reverse proxy.** The staff portal runs *on the kiosk*, so on-device or
   Splashtop access bypasses our proxy + FIDO2 entirely — the proxy only secures the network path, not the
   box. *Mitigation:* don't overstate the control (done in the memo wording); rely on the on-device
