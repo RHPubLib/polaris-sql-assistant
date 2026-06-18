@@ -109,3 +109,38 @@ Adversarial loop **paused at Derek's request** to discuss Bill's details / Tier 
 
 Loop still paused; material design + content changes since Round 2 → a fresh adversarial round is warranted
 when Derek says go.
+
+### Round 3 — Gemini only (Derek: "just run it by Gemini"): REVISE — 2 valid findings
+
+1. **Egress/exfiltration self-contradiction.** §4 ("box keeps normal WAN") vs R3/R7 ("egress ACL bounds
+   what a compromised box can reach"). With normal WAN, a compromised box can scrape via SIP2 and
+   exfiltrate out its own internet link → isolation protects RHPL-internal only, NOT data confidentiality.
+   **Fixed:** removed the false bound from R3; rescoped R7 to "no RHPL-internal pivot" (explicitly not a
+   no-exfil claim); added the default-deny-egress-allowlist as an *optional, heavy/brittle* Tier-2 layer in
+   §4 with the tradeoff named.
+2. **Unverified Google-IAP control ("vaporware").** Promised board a Google-gated admin panel but buried
+   the unverified dependency (does the vendor permit an outbound broker agent on their box?). **Fixed:**
+   downgraded to TARGET-pending-verification; named RHPL's real pattern (Cloud Run + IAP fronts an
+   RHPL-hosted app, not a device-local page → needs the broker); stated the realistic fallback (Splashtop +
+   on-device admin) if neither broker nor Bill's OAuth is permitted.
+
+### Project survey (localai /var/opt/rhpl) — RHPL real patterns folded in
+
+- **Wildcard cert:** RHPL holds a `*.rhpl.org` cert (nginx, GoDaddy) → staff-page HTTPS is trivial. Added.
+- **Staff-auth pattern:** Cloud Run + IAP by Google group (internal-reports it@/managers@/domain) — used to
+  sharpen the admin-gate section + its feasibility caveat.
+- **Peplink/SpeedFusion/FusionHub** confirmed in production (bookmobile, kids' bus) — Model 2 is genuinely
+  RHPL-proven, not theoretical.
+- **PAPI** = HMAC-SHA1 "PWS" signing; RHPL PAPI use is read-only, patron/item writes limited → reinforces
+  that PAPI-for-holds is new across the board (added nuance to the Lyngsoe section).
+- **Secrets:** `.env`+gitignore / keyless ADC; OS pattern is "never expose unauthenticated admin to the net."
+
+### Derek framing #4 (2026-06-18)
+
+> "I'm not saying to OT to NOT pick this branded locker. I just want to be honest about what we've pulled
+> so far and it's all based on what a vendor is telling us... We are taking them at their word."
+
+Added a **Basis-of-confidence statement** to PLAN (Goal) and the eval doc (Concerns intro): all findings are
+vendor-sourced, unverified by third parties/references; we take the vendor at his word; **explicitly NOT a
+recommendation against the product** — the technical "yes" is "yes, per the vendor, pending verification,"
+remedied by a proof-of-integration go-live test + references.
