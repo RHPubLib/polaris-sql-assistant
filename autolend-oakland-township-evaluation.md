@@ -265,14 +265,18 @@ Again I really appreciate all the information and how quickly you've been with t
 
 | # | Item | Owner | Status |
 |---|------|-------|--------|
-| 1 | TLS-only SIP2 supported into hosted instance | Clarivate | Ticket submitted 2026-06-17 |
-| 2 | Cellular dynamic IP vs. allowlist / need for static IP | Clarivate | Ticket submitted 2026-06-17 |
-| 3 | Clarivate setup/recurring cost + lead time | Clarivate | Ticket submitted 2026-06-17 |
-| 4 | Read-only PAPI enablement + cost | Clarivate | Ticket submitted 2026-06-17 |
-| 5 | TLS-only enforceable, no cleartext fallback | Bill (vendor) | Asked 2026-06-17 |
-| 6 | Offline mode OFF, no patron data on device | Bill (vendor) | Asked 2026-06-17 |
-| 7 | Standard Polaris notice for already-resident copies | Bill (vendor) | Asked 2026-06-17 |
-| 8 | Polaris customer references for board submission | Bill (vendor) | Asked 2026-06-17 |
+| 1 | TLS SIP2 supported into hosted instance | Clarivate | **RESOLVED 6/18** — yes, via stunnel; free; vendor must run compatible stunnel client |
+| 2 | Cellular dynamic IP vs. allowlist / need for static IP | Clarivate | **ANSWERED 6/18** — dynamic IP "will definitely cause problems" → static IP required |
+| 3 | Clarivate setup/recurring cost + lead time | Clarivate | **PARTIAL** — stunnel free; lead time still unknown |
+| 4 | Read-only PAPI enablement + cost | Clarivate | **Open** — not addressed in Mike's reply; follow up |
+| 5 | TLS enforceable, no cleartext fallback | Bill (vendor) | **RESOLVED 6/18** — no cleartext fallback in tunnel; enforce that Polaris's cleartext SIP is never the fallback |
+| 6 | Offline mode OFF, no patron data on device | Bill (vendor) | **RESOLVED 6/18** — configurable "Out of Service"; fail-closed confirmed |
+| 7 | Standard Polaris notice for already-resident copies | Bill (vendor) | **RESOLVED 6/18** — ILS sends the configured (standard Polaris) notice |
+| 8 | Polaris customer references for board submission | Bill (vendor) | Open — awaiting permission |
 | 9 | OT-vs-RHPL Polaris scoping (branch/collection/SIP login) | RHPL internal | Open |
 | 10 | Restock cadence + owner | RHPL/OT | Open |
 | 11 | SIP2-vs-PAPI reassurance note for Director (Juliane) | RHPL internal | Optional / pending |
+| 12 | **NEW** — static cellular IP obtainable + monthly cost | RHPL / carrier | Open — gating for 6/25 |
+| 13 | **NEW** — inbound staff-web-interface exposure (HTTPS? auth? IP-restrict or disable for portal?) | Bill (vendor) / RHPL decision | Open — gating for 6/25 |
+| 14 | **NEW** — confirm Bill's TLS = stunnel-compatible; broker Clarivate↔Bill stunnel setup | RHPL | Open — gating for 6/25 |
+| 15 | **NEW** — vendor Remote Access RMM: broker/outbound? capabilities? accept free IT account | Bill (vendor) / RHPL | Open |
