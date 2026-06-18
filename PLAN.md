@@ -108,9 +108,18 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
 - **R2 — stunnel not actually enforced → cleartext PIN.** Polaris has no native SIP TLS; the non-stunnel
   state is cleartext. *Mitigation:* stunnel is a contractual **go-live gate** + live holds-pickup test;
   verify no plaintext SIP listener is reachable.
-- **R3 — Splashtop is a vendor cloud control plane** that can fully control the Win10 box, with its own
-  MFA (not our IdP), even though the data path has no vendor cloud. *Mitigation:* document it; take the
-  free IT account for visibility; note it as a vendor↔vendor responsibility the board should understand.
+- **R3 — Vendor remote plane + locally-stored SIP2 creds = the sharpest residual risk.** The kiosk is a
+  **vendor-managed Windows box** that must hold Polaris **SIP2 terminal credentials locally**, and the
+  vendor retains full remote control via **Splashtop** (its own MFA, not our IdP). A Splashtop/vendor
+  compromise therefore yields the SIP2 creds *and* a pre-authenticated path through our allowlisted IP to
+  Clarivate — i.e., potential patron-record scraping over SIP2. **Neither model eliminates this; it is
+  inherent to any vendor-managed appliance** (true of Model 1 too). *Mitigations:* (a) provision the SIP2
+  account at **least privilege** — only the operations the kiosk needs (checkout/holds), nothing broader;
+  (b) take the free IT Splashtop account for **visibility/audit** of vendor sessions; (c) the egress ACL
+  (R7) bounds what a compromised box can reach; (d) **state this plainly to the board** — a vendor plane
+  can control a device transacting our patron data, and that trust dependency is accepted, not hidden.
+  *Honest limit:* "document it" alone is not a fix; (a)+(c)+monitoring reduce blast radius but the trust
+  in the vendor's remote-access hygiene remains a real, named dependency.
 - **R4 — Vendor track record unproven; references (esp. hosted-Clarivate) not yet in hand.**
   *Mitigation:* flagged as out-of-scope + named as a pending item; board weighs separately.
 - **R5 — SIP2 dependency is a structural limitation** vs. a PAPI-only design. *Mitigation:* captured as
