@@ -376,6 +376,14 @@ deferred — not material to this decision right now.**
 These stay in the write-up deliberately. Most of our "resolved" items rest on the **vendor's description of
 its own closed system**; a fast, articulate vendor thread is not the same as verified behavior. Ranked:
 
+> **Basis-of-confidence note (and what it is NOT).** Everything in this evaluation about how the device
+> behaves and protects data comes from **the vendor (Bill/ILS) describing his own product** — not from
+> RHPL testing, a third party, or reference customers (we have **none yet**). We are **taking the vendor at
+> his word** that he understands his system's logic and is being honest. **This is not a recommendation
+> against the locker, and we are not telling OT to reject it** — it is simply an honest statement that our
+> technical "yes" is **"yes, per the vendor, pending verification."** The remedy is a hands-on
+> proof-of-integration test (packet capture + a test patron) as a go-live gate, plus real references.
+
 1. **Load-bearing claims are vendor assertions, not observed behavior.** "No PII stored," "no cleartext
    fallback," "read/search-only PAPI, no writes," "offline-off = nothing written," "loader role can't
    escalate" — all are Bill describing his own box. **Treat as *claimed*, not *confirmed*, until verified**
