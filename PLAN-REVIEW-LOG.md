@@ -144,3 +144,33 @@ Added a **Basis-of-confidence statement** to PLAN (Goal) and the eval doc (Conce
 vendor-sourced, unverified by third parties/references; we take the vendor at his word; **explicitly NOT a
 recommendation against the product** — the technical "yes" is "yes, per the vendor, pending verification,"
 remedied by a proof-of-integration go-live test + references.
+
+### Round-3 findings reconciled against Bill's prior emails + Peplink capability (2026-06-18)
+
+Derek: "clear these up if we have the info from previous emails with Bill." Both Gemini findings resolve:
+
+- **Exfiltration (Gemini #1):** In **Model 2 the AutoLend has no independent uplink** — Bill confirmed it
+  takes an **Ethernet WAN handoff** from our Peplink, and to "let the network layer work normally" (device
+  is network-agnostic). So **all** egress crosses our Peplink → we enforce a **default-deny outbound
+  firewall** (Clarivate + Splashtop + OS-update/time/name/revocation), every flow logged. Turns "unbounded
+  internet exfil" into "exfil only via allowed, logged channels." Residual: allowed channels (esp.
+  Splashtop) are themselves exfil paths → bounded, not eliminated. (Model 1 = unbounded; another mark
+  against it.) Fixed R3 honest-limit + §4 egress bullet.
+- **Admin-gate "vaporware" (Gemini #2):** **Bill already answered this** — offered the **proxy approach**
+  ("setup a proxy to the staff web pages … authenticate, vet/challenge/MFA … then allow through"; "limit
+  those to allow only certain LAN IPs"). So **no agent on the vendor box is needed**: our public Google+
+  FIDO2 proxy → device staff page over the SpeedFusion tunnel (site-to-site) → device/Peplink IP-restricts
+  to our proxy only. Reframed #2 from "target pending verification" to "confirmed-by-vendor design" (with
+  the standing basis-of-confidence caveat that it's vendor-stated until tested).
+
+### Derek correction #5 — Peplink maturity (2026-06-18)
+
+> "This is proven to a point. We leverage it now to get two different sim cards internet to staff on the
+> kids bus and the van … We don't do dedicated IP addresses on these devices."
+
+Corrected the "production-proven" overstatement everywhere: the **bonded dual-SIM connectivity layer is
+proven** (van/kids' bus, for *connection redundancy*), but **dedicated/static IPs, the isolated tunnel
+endpoint, and egress filtering are NEW deployments for RHPL** — same gear/skills, new assembly. Added a
+"Maturity check (honest)" block to PLAN Model 2 + softened the eval-doc connectivity-design paragraph.
+Board message: the *components and skills* are proven here, the *topology* is new — don't call it
+battle-tested.
