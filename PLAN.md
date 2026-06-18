@@ -178,13 +178,16 @@ The kiosk has **two different ways in**, and they get **opposite** treatment:
   (b) take the free IT Splashtop account for **visibility/audit** of vendor sessions; (c) **state this
   plainly to the board** — a vendor plane can control a device transacting our patron data, and that trust
   dependency is accepted, not hidden.
-  *Honest limit — do NOT overstate isolation:* the network isolation (R7) protects **RHPL internal**; it
-  does **not** bound **data exfiltration**. As long as the box has a normal internet WAN and the vendor
-  has remote access, a compromised box can read patron data over SIP2 and **exfiltrate it out its own
-  internet link** — our SpeedFusion/Clarivate isolation does nothing against that. Bounding exfiltration
-  would mean routing *all* box traffic through our Peplink under a default-deny egress allowlist (see §4
-  option) — heavy and brittle. Realistic posture: **least-privilege + audit + accept the residual**, not
-  "prevented." This is the single hardest thing we cannot engineer away.
+  *How far we can actually bound it (cleared with Bill's prior answers):* in **Model 2 the box has no
+  independent uplink** — Bill confirmed it takes an **Ethernet WAN handoff from our Peplink** — so **all**
+  its egress crosses gear we own and we enforce a **default-deny Peplink outbound firewall** (Clarivate +
+  Splashtop + OS-update/time/name/revocation only), every flow logged (see §4). That turns "unbounded
+  internet exfil" into "exfil only via explicitly-allowed, logged channels." *Residual that genuinely
+  remains:* the allowed channels — above all **Splashtop**, the likely compromise vector — are themselves
+  possible exfil paths, so a vendor-plane compromise could still leak data through a permitted channel.
+  Realistic posture: **least-privilege SIP2 + egress filtering + audit + accept the (now-bounded)
+  residual**. *(Model 1 has none of this — device on its own carrier link, no RHPL firewall in path — so
+  there exfil really is unbounded: another concrete reason Model 1 is below standard.)*
 - **R4 — Vendor track record unproven; references (esp. hosted-Clarivate) not yet in hand.**
   *Mitigation:* flagged as out-of-scope + named as a pending item; board weighs separately.
 - **R5 — SIP2 dependency is a structural limitation** vs. a PAPI-only design. *Mitigation:* captured as
