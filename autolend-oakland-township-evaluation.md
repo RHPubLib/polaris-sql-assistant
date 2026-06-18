@@ -423,6 +423,11 @@ What we've been told (via that Polaris library):
   customers.** **No one is yet running Lyngsoe *hold lockers* over PAPI** — that library would be the
   **first**. They saw an in-person Lyngsoe PAPI demo (Feb 2026) and hope to move their hold lockers to
   PAPI "soon." So PAPI-for-holds is **real but not production-proven** — not a drop-in mature option.
+  *Added nuance from RHPL's own PAPI experience:* our PAPI use to date is **read-only** (catalog + patron
+  lookup; see `docs/polaris-api-claude.md`, Freegal), and patron/item **write** operations have been
+  limited via PAPI — consistent with why holds lockers have historically used SIP2 and why PAPI-for-holds
+  is genuinely new **across the board**, not just for Lyngsoe. Worth verifying that RHPL's Clarivate-hosted
+  Polaris PAPI even exposes the hold/checkout write operations a PAPI-native locker would require.
 - **Staff auth: same gap as ILS.** Lyngsoe currently uses **local accounts hosted by Lyngsoe**, with
   **MFA still in development** ("soon"); that library volunteered to partner on MFA setup/testing.
 
