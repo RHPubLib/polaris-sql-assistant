@@ -324,7 +324,10 @@ AutoLend --Ethernet--> Peplink router (2 SIMs, 2 carriers)
 | 9 | OT-vs-RHPL Polaris scoping (branch/collection/SIP login) | RHPL internal | Open |
 | 10 | Restock cadence + owner | RHPL/OT | Open |
 | 11 | SIP2-vs-PAPI reassurance note for Director (Juliane) | RHPL internal | Optional / pending |
-| 12 | **NEW** — static cellular IP obtainable + monthly cost | RHPL / carrier | Open — gating for 6/25 |
-| 13 | **NEW** — inbound staff-web-interface exposure (HTTPS? auth? IP-restrict or disable for portal?) | Bill (vendor) / RHPL decision | Open — gating for 6/25 |
-| 14 | **NEW** — confirm Bill's TLS = stunnel-compatible; broker Clarivate↔Bill stunnel setup | RHPL | Open — gating for 6/25 |
-| 15 | **NEW** — vendor Remote Access RMM: broker/outbound? capabilities? accept free IT account | Bill (vendor) / RHPL | Open |
+| 12 | Stable allowlisted source IP — Peplink+FusionHub (preferred) vs. carrier static IP | RHPL / Bill | Asked Bill 6/18 — gating for 6/25 |
+| 13 | Inbound staff-web-interface exposure (HTTPS? auth? IP-restrict or via portal?) | Bill (vendor) / RHPL | Asked Bill 6/18 — gating for 6/25 |
+| 14 | stunnel setup guidance + guarantee no cleartext-SIP fallback | Bill (vendor) | Asked Bill 6/18 — gating for 6/25 |
+| 15 | Vendor Remote Access RMM: broker/outbound? capabilities? IdP auth? accept free IT account | Bill (vendor) / RHPL | Asked Bill 6/18 |
+| 16 | Staff SSO via Google OAuth/OIDC or SAML + FIDO2 MFA; named accounts vs. shared | Bill (vendor) | Asked Bill 6/18 |
+| 17 | AutoLend accepts Ethernet WAN handoff (gates the Peplink design) | Bill (vendor) | Asked Bill 6/18 — gating for 6/25 |
+| 18 | Read-only PAPI content channel re-confirm (bib only, no patron/item writes) | Bill (vendor) | Asked Bill 6/18 |
