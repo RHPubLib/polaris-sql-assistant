@@ -51,13 +51,24 @@ Give OTLB a clear, honest **technical-feasibility + security** answer so they ca
      it falls below the security standard RHPL applies to any system touching patron data, and RHPL
      would not operate it this way.**
    - **Model 2 — RHPL-managed, locked down (RECOMMENDED, = RHPL's baseline, not a luxury).**
-     `AutoLend → Ethernet → Peplink → SpeedFusion VPN → FusionHub (our static IP) → stunnel →
-     Clarivate.` SpeedFusion encrypts the whole device→RHPL path; stunnel still rides inside (defense in
-     depth). The allowlisted static IP is **our FusionHub's** (cellular IPs underneath can churn). Staff
-     portal reachable **only through our network, behind our reverse proxy with Google OAuth + YubiKey
-     FIDO2**; never exposed to the public internet. Availability: one cellular SIM, or **two carriers
-     bonded** for redundancy. **Operating Model 2 commits RHPL to being the administrator of that
-     network path** (ongoing ownership/responsibility) — surfaced as the Director's decision to accept.
+     `AutoLend (stunnel client) → Ethernet → Peplink → SpeedFusion VPN → FusionHub (our static IP) →
+     internet → Clarivate (stunnel server).` The stunnel-encrypted SIP2 rides **inside** the SpeedFusion
+     tunnel (two stacked layers). The allowlisted static IP is **our FusionHub's** (cellular IPs
+     underneath can churn). Availability: one cellular SIM, or **two carriers bonded** for redundancy.
+     Three lockdowns that distinguish Model 2:
+     - **Egress isolation (blast-radius control).** The kiosk is treated as an **untrusted device on its
+       own isolated segment**; Peplink/FusionHub firewall rules restrict its egress to **only the
+       Clarivate stunnel IP:port** (plus the vendor RMM endpoint) — **no route to any other RHPL internal
+       system**, and the FusionHub is not a shared-trust hub. A compromised kiosk cannot pivot inward or
+       abuse our trusted IP against anything but the one allowlisted Clarivate endpoint.
+     - **Staff portal — network-path hardening (stated honestly).** The portal is served *locally on the
+       kiosk*. Our reverse proxy + Google OAuth + YubiKey FIDO2 secures the **remote/network path** staff
+       use to reach it and keeps it **off the public internet**; it does **not** secure the box against
+       someone with on-device or vendor-remote (Splashtop) access — that's governed by the vendor remote
+       plane (R3) and the on-device local-card admin model, not by our proxy. We do not claim the proxy
+       "locks down the portal" absolutely; it removes public/internet exposure of a default-HTTP page.
+     - **Operating Model 2 commits RHPL to being the administrator of that network path** (ongoing
+       ownership/responsibility) — surfaced as the Director's decision to accept.
 
 5. **What's confirmed (confidence anchors).** Read/search-only catalog access (no patron/item writes);
    no patron data stored on the device (fail-closed "Out of Service", offline mode off); native Polaris
