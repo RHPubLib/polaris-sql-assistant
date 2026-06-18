@@ -283,8 +283,14 @@ After folding in Clarivate's stunnel/allowlist answers, a second email went to B
 
 ### Candidate connectivity design — Peplink + FusionHub (RHPL-managed)
 
-Verified approach for giving Clarivate one stable allowlisted IP over cellular (RHPL already runs Peplink
-SpeedFusion on the bookmobile and kids' bus):
+Approach for giving Clarivate one stable allowlisted IP over cellular. **What's proven vs. new (be precise
+with the board):** RHPL runs Peplink SpeedFusion on the van/kids' bus **today only for bonded dual-SIM
+connectivity** — keeping staff connected via link aggregation/failover. **We do NOT run dedicated/static
+public IPs on those devices.** So the bonding layer + Peplink skills are proven here, but the load-bearing
+new pieces — a **FusionHub presenting a dedicated static public IP** for Clarivate's allowlist, a
+**dedicated/isolated tunnel endpoint**, and **default-deny egress filtering** — are **new deployments for
+RHPL** (within our existing gear/skills, but not in production now). The *components* are familiar; the
+*assembly* is new:
 
 ```
 AutoLend --Ethernet--> Peplink router (2 SIMs, 2 carriers)
