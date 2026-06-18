@@ -130,19 +130,20 @@ The kiosk has **two different ways in**, and they get **opposite** treatment:
    card** (courier role can *only* add/remove material — cannot modify records, read patron data, or
    escalate; the card is a local dummy checked only by the box). Loading stays **low-friction — tap card,
    load, done.** We deliberately add nothing here; gating it would only hurt staff for no security gain.
-2. **Remote admin control panel — TARGET: gate via Google (RHPL's standard pattern), pending a
-   feasibility check we have NOT done.** RHPL's established way to gate staff web tools is **Cloud Run +
-   Identity-Aware Proxy**, grouped by Google identity (e.g. `group:it@rhpl.org`) — proven on the internal-
-   reports portal. **But that pattern fronts an RHPL-hosted Cloud Run app; here the admin page lives *on
-   the vendor's box*.** To put Google auth in front of it without an inbound open port, we need **one of**:
-   (a) the vendor permitting an **outbound broker/connector agent** on their managed Windows OS (IAP
-   connector / tunnel) → then IAP/OAuth in front, cloud layer, no RHPL-internal touchpoint; or (b)
-   leveraging **Bill's existing OAuth/MFA** (built for his Academic sites). **We have NOT verified the
-   vendor allows (a)** — so this control is a *target, not a confirmed capability*, and the memo must say
-   so. **If neither (a) nor (b) is permitted, the realistic fallback is the vendor's own Splashtop portal +
-   the on-device local-card admin** — i.e., we accept vendor-plane auth rather than RHPL/Google auth for
-   remote work. (We do hold a `*.rhpl.org` wildcard cert, so adding HTTPS to the staff page itself is
-   trivial whenever we want it.)
+2. **Remote admin control panel — gate via our Google-authed proxy. CLEARED with Bill's own email (no
+   agent on the vendor box required).** Gemini worried this needs an unverified outbound broker agent
+   installed on the vendor's Windows OS. It does not — **Bill already offered the proxy path** in writing:
+   *"you could setup a proxy to the staff web pages, so you could have staff connect on your side,
+   authenticate, vet/challenge/MFA, whatever, then allow the connection through,"* and *"we can limit those
+   to allow only certain LAN IPs."* So the design is: staff → **our public auth proxy** (Google OAuth/IAP +
+   FIDO2 — our existing internal-reports pattern) → proxy reaches the device's staff HTTP page **over the
+   SpeedFusion tunnel** (the device sits behind our Peplink, reachable site-to-site from our side) → the
+   device/Peplink **IP-restricts the staff page to only our proxy's source**. **Nothing is installed on the
+   vendor OS, and no public inbound port is opened on the device** (only our proxy is public, exactly as
+   with internal-reports). We also hold a `*.rhpl.org` wildcard cert, so HTTPS on the page is trivial.
+   Standing caveat (basis-of-confidence): Bill's "proxy-able + LAN-IP-restrictable" is **vendor-stated
+   until we test it** — but it needs no capability he hasn't already told us exists, so this is a
+   *confirmed-by-vendor design*, not unverified vaporware.
 
 ## Tradeoffs (choices made, alternatives rejected)
 
