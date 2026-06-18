@@ -261,6 +261,54 @@ Again I really appreciate all the information and how quickly you've been with t
 
 ---
 
+## Second follow-up to Bill — SENT 2026-06-18
+
+After folding in Clarivate's stunnel/allowlist answers, a second email went to Bill. Questions asked:
+
+- **stunnel setup:** how to configure the AutoLend to ride Clarivate's stunnel tunnel, and how to guarantee
+  the device only ever talks over it and never falls back to a cleartext SIP port.
+- **Connection method / stable IP:** asked Bill to recommend how to connect the unit given Clarivate's
+  source-IP allowlist (a changing cellular IP won't work); deferring to what's worked at his hosted-Polaris
+  cellular installs. Floated the RHPL **Peplink + FusionHub** design (below) and asked the gating question:
+  **can the AutoLend run off an Ethernet WAN handoff instead of its internal cellular box?**
+- **Identity provider / SSO:** does the staff interface support **Google OAuth 2.0 / OIDC or SAML** so staff
+  authenticate with RHPL accounts and inherit our **YubiKey FIDO2 MFA** (as we run LEAP)? If not native, can it
+  sit behind an IdP-aware gateway? If local accounts are unavoidable — individual named accounts (password
+  policy + lockout) and FIDO2/second-factor support on them, not one shared login.
+- **Staff interface exposure:** served directly from the device's public IP over HTTPS (valid cert) and
+  IP-restrictable to our ranges, or reachable via the vendor remote-access portal so no inbound port is exposed.
+- **Remote Access dashboard:** taking the no-charge IT account; can it authenticate via our IdP too.
+- **Catalog content channel:** re-confirm it's the read-only PAPI (bib/catalog only, no patron/item writes).
+- **References:** nudge — ideally a hosted-Polaris site.
+
+### Candidate connectivity design — Peplink + FusionHub (RHPL-managed)
+
+Verified approach for giving Clarivate one stable allowlisted IP over cellular (RHPL already runs Peplink
+SpeedFusion on the bookmobile and kids' bus):
+
+```
+AutoLend --Ethernet--> Peplink router (2 SIMs, 2 carriers)
+        --SpeedFusion bonded/encrypted tunnel--> FusionHub (RHPL-hosted VM, static public IP)
+        --stunnel--> Clarivate Polaris SIP2
+```
+
+- The **static IP comes from the FusionHub**, not the cellular links — Clarivate allowlists that fixed IP; the
+  cellular WAN IPs underneath can churn freely. Dual-carrier = link redundancy.
+- **stunnel still rides end-to-end inside the path** (SpeedFusion encrypts device→FusionHub; stunnel encrypts the
+  SIP2 session and the FusionHub→Clarivate leg). The two layers stack.
+- **FusionHub Solo is free, no throughput cap**, runs on VMware (host on existing ESXi); needs a static public
+  IP at the host (RHPL HQ link works). Alternative: paid SpeedFusion Cloud with a dedicated IP.
+- **Tradeoff vs. the original 6/17 "fully segmented, vendor-to-vendor" posture:** this puts RHPL gear (Peplink +
+  FusionHub) back in the data path — so it becomes **RHPL-managed connectivity**, not off-our-network. That's a
+  *stronger* control/redundancy story for the board, but a different framing of responsibility. Present to the
+  board as a choice: (A) vendor-managed cellular + purchased static carrier IP (hands-off), or (B) RHPL-managed
+  Peplink + FusionHub (more control/redundancy, leverages gear/skills we already have). **(B) is the likely
+  recommendation.** Hinges on Bill confirming the unit accepts an Ethernet WAN.
+- Sources: Peplink SpeedFusion Bonding tech; FusionHub Solo (free, no throughput limit) — peplink.com /
+  Peplink Community.
+
+---
+
 ## Open items tracker
 
 | # | Item | Owner | Status |
