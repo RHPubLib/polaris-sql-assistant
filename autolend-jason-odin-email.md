@@ -14,7 +14,8 @@ Derek knows him well from IUG. Product = Autolend holds-locker kiosk from Intern
 
 Jason,
 
-Hope you're doing well — overdue for a real catch-up since the last IUG.
+Hope you're doing well — overdue for a real catch-up since the last IUG, and since we've sat on enough
+committees together I figured you're exactly the person to be straight with me on this.
 
 I'm reaching out because I learned ODIN is running the **Autolend** holds lockers from International
 Library Services, and we (Rochester Hills, near Detroit) are evaluating one for a township we serve. Our
