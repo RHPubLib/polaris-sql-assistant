@@ -63,6 +63,35 @@ Bill's "new in 8.1.x" theory doesn't hold up. Evidence:
 
 ---
 
+## Live verification (2026-06-22) — real call + result
+
+Ran against the production catalog, **unsigned** (RHPL's PAPI public-method auth level is open;
+no `PWS` header needed):
+
+```
+GET https://catalog.rhpl.org/PAPIService/REST/public/v2/1033/100/1/bib/33158013187361?type=barcode
+```
+
+Item barcode `33158013187361` = a copy of *The Hobbit: A Graphic Novel*. Response HTTP 200, 28 rows:
+
+```
+ElementID 11  Control Number:  1099993   ← Bib ID, returned straight from the item barcode
+ElementID 35  Title:           Hobbit : a graphic novel of the fantasy classic
+ElementID 18  Author:          Tolkien, J. R. R. (John Ronald Reuel), 1892-1973
+ElementID 13  Call Number:     HOBBIT
+```
+
+Cross-checks: BibKeywordSearch (TI=hobbit) independently returns Control Number `1099993` for that
+title, and `/bib/1099993/holdings` lists barcode `33158013187361` — so the barcode→Bib mapping is
+confirmed both directions. A deliberately-invalid barcode returns `PAPIErrorCode -1000 "Invalid
+barcode supplied"` (HTTP 200), confirming the v2 route is live and validating input.
+
+**Note for the reply:** since RHPL serves this unsigned, sites where it "fails" may simply have the
+PAPI public-method authentication level set to ALL (doc: *"Authorization Required? Yes, if
+authentication level set to ALL"*), which would require a signed `PWS` header.
+
+---
+
 **Reply drafted to Bill 2026-06-22** (in Derek's Gmail drafts; subject *Re: Autolend —
 BibGetByType v2 (barcode→Bib)*): conveys the 7.6 revision-history citation, the Swagger-omits-v2
 point, the v1-vs-v2 URL gotcha, the SILS/Phoenix/hackathon corroboration, and the auth-level
