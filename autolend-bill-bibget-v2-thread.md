@@ -48,10 +48,15 @@ Bill's "new in 8.1.x" theory doesn't hold up. Evidence:
   (`docs/papi-reference/PAPIRevisionHist.md`) lists BibGetByType as split into v1/v2 in
   **Polaris 7.6** — same release as the v2 PatronRegistration endpoints. The endpoint doc page
   is footered "Polaris Version 8.0." Not bleeding-edge.
-- **Absent from Swagger everywhere — including ours.** Pulled RHPL's live spec from
-  `https://catalog.rhpl.org/PAPIService/swagger/v1/swagger.json` (128 paths): **zero v2 paths of
-  any kind**, no BibGetByType. So "not on the swagger pages" is true for RHPL too, yet it works.
-  Swagger under-reports the v2 surface; it is not the authoritative list of live methods.
+- **IS in Swagger — under a separate "Polaris API 2.0" definition.** *(Corrected 2026-06-22 — an
+  earlier note here wrongly said v2 was absent from Swagger; that was based on fetching only the v1
+  definition.)* The Swagger UI loads two documents via the top-right **"Select a definition"
+  dropdown**: `/swagger/v1/swagger.json` (title "Polaris API", 128 paths, all v1) and
+  `/swagger/v2/swagger.json` (title "Polaris API 2.0"), which contains the v2 calls:
+  `GET .../public/v2/.../bib/{Key}` **with the `type` query param** (= BibGetByType v2), plus v2
+  patron POST/GET/PATCH. So `?type=barcode` IS documented — you just have to switch the dropdown
+  from the default "Polaris API" (v1) to "Polaris API 2.0". Bill likely missed it on the default v1
+  view, or his older sites don't generate the v2 definition.
 - **Why it fails for Bill's 2 sites:** the only bib endpoint Swagger exposes is v1
   `/public/v1/{LangID}/{AppID}/{OrgID}/bib/{BibID}` (expects a Bib ID, no `?type=barcode`).
   Testing from Swagger → barcode fed to v1 → fails, looks like "URL not enabled." The v2 call
