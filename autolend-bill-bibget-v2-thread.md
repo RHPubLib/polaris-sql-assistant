@@ -57,11 +57,13 @@ Bill's "new in 8.1.x" theory doesn't hold up. Evidence:
   patron POST/GET/PATCH. So `?type=barcode` IS documented — you just have to switch the dropdown
   from the default "Polaris API" (v1) to "Polaris API 2.0". Bill likely missed it on the default v1
   view, or his older sites don't generate the v2 definition.
-- **Why it fails for Bill's 2 sites:** the only bib endpoint Swagger exposes is v1
-  `/public/v1/{LangID}/{AppID}/{OrgID}/bib/{BibID}` (expects a Bib ID, no `?type=barcode`).
-  Testing from Swagger → barcode fed to v1 → fails, looks like "URL not enabled." The v2 call
-  must be hand-built: `/public/v2/{LangID}/{AppID}/{OrgID}/bib/{barcode}?type=barcode`.
-  Secondary check: PAPI public-method auth level — doc says auth required if set to ALL.
+- **Why it likely looked absent / failed for Bill:** if you stay on the default "Polaris API" (v1)
+  definition, the only bib endpoint shown is `/public/v1/.../bib/{BibID}` (expects a Bib ID, no
+  `?type=barcode`) — feed a barcode to that and it fails, looking like "URL not enabled." The v2
+  call is `/public/v2/{LangID}/{AppID}/{OrgID}/bib/{barcode}?type=barcode` (visible once you switch
+  the Swagger definition dropdown to "Polaris API 2.0"). If his older sites don't even list the v2
+  definition, that's a build-age thing, not a missing method. Secondary check: PAPI public-method
+  auth level — doc says auth required if set to ALL.
 - **Multi-site confirmation:** Scott (SILS) was using this exact call at the **IUG 2024 hackathon
   in Denver**; the hackathon group routinely exercises v2 calls not in Swagger. Phoenix uses it
   in their locker system. RHPL, SILS, Phoenix → live and stable across multiple sites.
