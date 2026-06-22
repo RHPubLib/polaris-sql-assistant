@@ -37,3 +37,33 @@ BTW, it is still not listed as an option on the PAPI developers swagger pages.
 **From:** Derek Brown (RHPL)
 
 Any idea why we can test it and it function and same with SILS (another Library system in Canada) and Phoenix uses it with their book locker system.
+
+---
+
+## Finding (2026-06-22) — it's NOT new to 8.1
+
+Bill's "new in 8.1.x" theory doesn't hold up. Evidence:
+
+- **Shipped in Polaris 7.6.** III's PAPI Revision History
+  (`docs/papi-reference/PAPIRevisionHist.md`) lists BibGetByType as split into v1/v2 in
+  **Polaris 7.6** — same release as the v2 PatronRegistration endpoints. The endpoint doc page
+  is footered "Polaris Version 8.0." Not bleeding-edge.
+- **Absent from Swagger everywhere — including ours.** Pulled RHPL's live spec from
+  `https://catalog.rhpl.org/PAPIService/swagger/v1/swagger.json` (128 paths): **zero v2 paths of
+  any kind**, no BibGetByType. So "not on the swagger pages" is true for RHPL too, yet it works.
+  Swagger under-reports the v2 surface; it is not the authoritative list of live methods.
+- **Why it fails for Bill's 2 sites:** the only bib endpoint Swagger exposes is v1
+  `/public/v1/{LangID}/{AppID}/{OrgID}/bib/{BibID}` (expects a Bib ID, no `?type=barcode`).
+  Testing from Swagger → barcode fed to v1 → fails, looks like "URL not enabled." The v2 call
+  must be hand-built: `/public/v2/{LangID}/{AppID}/{OrgID}/bib/{barcode}?type=barcode`.
+  Secondary check: PAPI public-method auth level — doc says auth required if set to ALL.
+- **Multi-site confirmation:** Scott (SILS) was using this exact call at the **IUG 2024 hackathon
+  in Denver**; the hackathon group routinely exercises v2 calls not in Swagger. Phoenix uses it
+  in their locker system. RHPL, SILS, Phoenix → live and stable across multiple sites.
+
+---
+
+**Reply drafted to Bill 2026-06-22** (in Derek's Gmail drafts; subject *Re: Autolend —
+BibGetByType v2 (barcode→Bib)*): conveys the 7.6 revision-history citation, the Swagger-omits-v2
+point, the v1-vs-v2 URL gotcha, the SILS/Phoenix/hackathon corroboration, and the auth-level
+check — closing that the barcode→Bib lookup works cleanly so no barcode→Bib ID dump is needed.
