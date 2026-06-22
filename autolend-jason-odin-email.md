@@ -69,13 +69,20 @@ ODIN approached each piece:
   server cert on the client side?** That last bit is the part I'm fussiest about — encryption without cert
   validation is still MITM-able, and I can't tell yet whether the vendor's client does `verifyPeer` properly.
 
-- **Connectivity + the source IP.** Clarivate allowlists the SIP endpoint by **source IP**, and a plain
-  cellular link rolls its IP constantly, so a **static IP is effectively mandatory.** My leaning is to put the
-  unit behind **our own Peplink + SpeedFusion to a FusionHub that presents one static public IP** (so the
-  cellular WANs underneath can churn, Clarivate only ever sees our fixed IP, and stunnel still rides inside the
-  SpeedFusion tunnel). The simpler alternative is just buying a **static carrier IP** and running it on the
-  vendor's own cellular box. **Which way did ODIN go — vendor cellular with a static carrier IP, or your own
-  router/VPN in front? Does the Autolend take an Ethernet/WiFi WAN handoff cleanly for you?**
+- **On-network vs. off — this is the big one for us.** Here's where our situation likely differs from yours:
+  **do your lockers sit anywhere *outside* your network, or are they all on ODIN-controlled sites/links?** Our
+  unit would go in a township spot with no fiber/our network anywhere near it, so we'd have to **leverage
+  cellular service** to reach it — the locker would effectively live out on a carrier link, not behind our
+  edge. If all of yours are on-network, that's good to know too; if any of yours run remote/cellular, I'd love
+  to hear how that's gone and what you did to make it safe.
+
+- **Connectivity + the source IP.** Tied to the above: Clarivate allowlists the SIP endpoint by **source IP**,
+  and a plain cellular link rolls its IP constantly, so for our off-network case a **static IP is effectively
+  mandatory.** My leaning is to put the unit behind **our own Peplink + SpeedFusion to a FusionHub that
+  presents one static public IP** (cellular WANs underneath can churn, Clarivate only ever sees our fixed IP,
+  and stunnel still rides inside the SpeedFusion tunnel). The simpler alternative is just buying a **static
+  carrier IP** and running it on the vendor's own cellular box. **Which way did ODIN go — and does the Autolend
+  take an Ethernet/WiFi WAN handoff cleanly for you, or are you on its internal connection?**
 
 - **Network segmentation + egress.** I'm planning to keep this thing **off our internal network** — its own
   segment, **default-deny outbound**, only Clarivate (via the tunnel) + the vendor RMM + Windows
