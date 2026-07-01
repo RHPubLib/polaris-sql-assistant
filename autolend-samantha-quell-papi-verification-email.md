@@ -33,9 +33,13 @@ more than once (as recently as last August), that searching for **catalog data b
 "not currently offered." Because of that, their existing installs (e.g., ODIN / North Dakota, live
 since Jan 2023) built a custom barcode → Bib ID lookup and then used BibGet. But our own reading of
 the PAPI Revision History shows **BibGetByType v2 (barcode → Bib, `?type=barcode`) was introduced in
-Polaris 7.6**, and we've run it live — unsigned — against our own catalog, and confirmed other sites
-use it in production (SILS is one). Separately, patron barcode authentication (`AuthenticatePatron`)
-appears to go back to **Polaris 5.2**, so patron auth over PAPI is not new either. That's the gap I'd
+Polaris 7.6**, and — importantly — we've validated it ourselves. My own testing against RHPL's Polaris
+covered the full path a locker/kiosk would use: **patron authentication, item check-out, item
+check-in, and item→bib matching**, and all of it worked. The barcode→bib call in particular
+(BibGetByType v2, unsigned) we ran cleanly across **~20 items** — it works great. Other sites use it in
+production too (SILS is one), and patron barcode authentication (`AuthenticatePatron`) goes back to
+**Polaris 5.2** — so none of this is new. That's exactly what makes the vendor's account of being told
+barcode search is "not currently offered" (most recently last August) hard to square, and the gap I'd
 like to close.
 
 We also have direct peer corroboration on the locker/transaction side: Eric Young at **Phoenix Public
