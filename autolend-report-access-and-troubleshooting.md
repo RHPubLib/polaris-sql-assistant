@@ -3,29 +3,31 @@
 *Saved 2026-06-18. Companion to `autolend-oakland-township-evaluation.md` (full working analysis),
 `autolend-director-cover-email.md` (Juliane's 6-bullet summary), and `autolend-bill-reply-email.md`.*
 
-## The published report (internal reports — Director Reports, managers tier)
+## The published report (internal reports — IT Internal tier, moved here 2026-07-01)
 
-- **What:** Full technical & security evaluation for OT, with a **Director's summary** (6 bullets) at the
-  top and the **complete vendor + Clarivate dialog as an appendix** (Bill's June 18 reply verbatim).
-- **Repo source:** `/var/opt/rhpl/internalreports/portal/community-survey/autolend-kiosk-evaluation/index.html`
-- **Tier:** managers (`internalreports-mgt.rhpl.org`), IAP-restricted to **`managers@rhpl.org`**.
-- **UNLISTED:** intentionally *not* linked from the Director Reports landing page
-  (`portal/community-survey/index.html`) — reachable only by direct URL so Derek hands it to Juliane.
-- **Direct link (custom domain):**
-  `https://internalreports-mgt.rhpl.org/community-survey/autolend-kiosk-evaluation/`
-- **Direct link (Cloud Run, bypasses the rhpl.org name):**
-  `https://internal-reports-mgr-379661259922.us-central1.run.app/community-survey/autolend-kiosk-evaluation/`
-- **Deployed revision:** `internal-reports-mgr-00020-dl2` (100% traffic), 2026-06-18.
+- **What:** Full technical & security evaluation for OT, with a **Director's summary** at the top and the
+  **complete vendor + Clarivate dialog as an appendix**.
+- **Repo source:** `/var/opt/rhpl/internalreports/portal/it-internal/autolend-kiosk-evaluation/index.html`
+- **Tier:** IT Internal (`internalreports-it.rhpl.org`), IAP-restricted to **`it@rhpl.org`** — **plus**
+  `juliane.morian@rhpl.org` as a per-service one-off grant (added 2026-06-15), so the Director keeps access.
+- **LISTED:** now linked from the IT Internal Reports index (`portal/it-internal/index.html`, under
+  *Infrastructure & Devices*). (On the old managers-tier home it was deliberately unlisted.)
+- **Direct link:** `https://internalreports-it.rhpl.org/autolend-kiosk-evaluation/`
+- **Deployed revision:** `internal-reports-it-00037-czc`, 2026-07-01.
 
-## How it was published (managers tier = reauth-walled gcloud path)
+> **Location history:** originally published on the **managers** tier at
+> `…-mgt.rhpl.org/community-survey/autolend-kiosk-evaluation/` (2026-06-18, unlisted); briefly re-filed to
+> the managers **IT Reports** section (`…-mgt.rhpl.org/it-reports/…`) on 2026-07-01; then moved to the **IT
+> Internal** tier (above) the same day. Both managers-tier URLs now **404** (stale copies were purged from the
+> mgr run-sources base archive so they don't linger).
 
-1. `! gcloud auth login` (Derek, in-session — the staff/mgr tiers hit the interactive-reauth wall; only the
-   it@ tier is keyless).
-2. `cd /var/opt/rhpl/internalreports && bash cloud-build/assemble.sh` → builds `/tmp/ir-ctx/{staff,mgr,it}`.
-3. **Inject the new report folder** (assemble only overlays the *index* page, not new subfolders):
-   `cp -r portal/community-survey/autolend-kiosk-evaluation /tmp/ir-ctx/mgr/html/community-survey/`
-4. `~/google-cloud-sdk/bin/gcloud run deploy internal-reports-mgr --source /tmp/ir-ctx/mgr --region
-   us-central1 --iap --project rhpl-internal-reports --quiet`
+## How it is published now (IT tier = KEYLESS, no reauth)
+
+`cd /var/opt/rhpl/internalreports && python3 cloud-build/deploy_it_via_cloudbuild.py` — tars the repo, submits
+`cloud-build/it.cloudbuild.yaml` to Cloud Build impersonating `report-deployer@` via local ADC; assembles the
+it context from `portal/it-internal/` and deploys `internal-reports-it` entirely in GCP. **No gcloud CLI, so
+no interactive-reauth wall.** The it tier is fully repo-authored, so committing/staging the report + its index
+card in the repo is all that's needed.
 
 ## Access troubleshooting (observed 2026-06-18)
 
