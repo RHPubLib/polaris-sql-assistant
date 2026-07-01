@@ -582,3 +582,39 @@ should compare vendors) — **not** as a turnkey, readier-than-ILS substitute fo
 | 21 | Remote admin gate — Google proxy over SpeedFusion, IP-restrict to proxy | RHPL | **Design confirmed by Bill's proxy email** — no agent on vendor box; vendor-stated until tested |
 | 22 | **Proof-of-integration test** (packet capture + test patron) as a go-live gate | RHPL / both vendors | **Recommended** — verifies the vendor-stated claims before sign-off |
 | 23 | New-for-RHPL build: FusionHub **dedicated static IP** + isolated endpoint + egress filter | RHPL | **Open** — components proven, topology new; scope/effort to confirm |
+
+## 2026-07-01 — End-to-end PAPI path verified against Polaris docs; quote verbiage assessment
+
+ILS put PAPI-for-transactions into the OT board quote ("The Autolend machine will use the Polaris API connection
+('PAPI') for all transaction data…"). We walked the full patron journey and checked **each** required call against
+**Polaris's own API documentation** for our version (**Polaris 8.1**). Verdict: **every required call exists**, and
+the one central to the quote is already proven on our own catalog.
+
+| Step | PAPI method | Access | Exists in 8.1? |
+|------|-------------|--------|----------------|
+| 1. Patron sign-in (card + PIN, status/blocks) | `AuthenticatePatron` | Public (patron) | **Yes — High** (HTTPS; short-lived token, PIN not reused) |
+| 2. Find the ready hold | `PatronHoldRequestsGet` (+ `HoldRequestCreate`/`Reply`, `HoldPickupAreaID`) | Mixed | **Yes — High** (locker workflow TBD w/ vendor) |
+| 3. Check out (charge; auto-renews) | `ItemCheckoutPost` (7.4) | Protected (staff) | **Yes — High** |
+| 4. Check in / "smart return" (discharge) | `ItemCheckinPost` (7.7) | Protected (staff) | **Yes — High** |
+| 5. Book data for browsing (title/author/summary/ISBN) | `BibGetByType` v2 | Public | **Very High — proven on RHPL's live catalog** |
+| 6. Cover artwork | ISBN → cover-image service | — | **Achievable** (bib/summary from PAPI; jacket image via ISBN from a cover provider, not PAPI core) |
+
+**Confidence re-eval:** the calls themselves are settled — documented Polaris methods, all in 8.1. Risk moved from
+"can Polaris do it" (yes) to **(a)** ILS's production implementation (RHPL = first prod site on transactional PAPI)
+and **(b)** provisioning the *protected* check-out/check-in methods + a least-privilege staff PAPI credential on our
+Clarivate-hosted instance. Written into the internal report ("The end-to-end PAPI path" section).
+
+### Quote verbiage — two board versions
+
+**A) The quote as written — does it work as-is?** Workable as a *statement of intent*, **not** sufficient as a
+*commitment*. "All transaction data" is the right headline, but the itemized list only details smart-returns
+(check-in) and content/dashboard — it never names **patron authentication, check-out (charge), or holds**, and never
+says **SIP2 is not used**. A board could read it as full-PAPI; the language does not require it. Payment is also tied
+to "Delivery & Installation," not to a working integration. → Acceptable only if we don't need it to be binding.
+
+**B) Explicit verbiage we'd want ILS to state** (drop-in for the quote/agreement):
+> *"All AutoLend transactions with the host library's Polaris system — patron authentication (barcode + PIN),
+> item check-out (charge), item check-in (discharge), hold pickup, and catalog/bib content retrieval — are performed
+> exclusively over the Polaris API (PAPI). No SIP2 or other protocol is used for any patron or material transaction.
+> ILS will validate these PAPI transactions end-to-end against the library's Clarivate-hosted Polaris instance prior
+> to go-live, and final acceptance/payment is contingent on that successful validation."*
