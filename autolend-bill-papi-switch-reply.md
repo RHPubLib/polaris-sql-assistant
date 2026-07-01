@@ -23,8 +23,8 @@ different angles across a couple weeks and a dozen or so emails. I only flagged 
 sure you and I are working from the same picture before I bring anything back to the table.
 
 Where my head is now: the Oakland Township board most likely voted last night, so what I'm really trying to
-sort out is simply **what's possible today versus what would be possible down the road.** Two lanes, and I'd
-love your read on each.
+picture is what it looks like to bring on a customer who wants **PAPI as the only integration method** — no
+SIP2 in the mix at all. That's the direction we'd want to go, and I'd love your read on a few things around it.
 
 The reason PAPI matters so much to us isn't only the security upside — it's the seamless experience. We're
 already comfortable supporting several third-party vendors against our Clarivate-hosted Polaris over PAPI, so
