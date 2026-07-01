@@ -2,7 +2,8 @@
 
 *Drafted 2026-07-01. Purpose: get Sam's expert read on why a vendor (International Library Services /
 "AutoLend") was repeatedly told by Polaris/PAPI support that barcode catalog search "isn't offered,"
-when RHPL has verified it first-hand and Phoenix/Lyngsoe are doing it in production. Two pointed
+when RHPL has verified it first-hand and Lyngsoe's SideEvent V2 already runs PAPI-only for its
+Library-of-Things locker customers (live since March 2026; Phoenix is testing it for hold lockers). Two pointed
 questions: (1) are we missing something / why would Polaris say it can't be done; (2) why would ILS
 believe PAPI patron verification wasn't supported when it's been out since 5.2 — is that somehow not
 surfaced to vendors on the Clarivate side. Tone: friendly/casual — Derek & Sam have an established
