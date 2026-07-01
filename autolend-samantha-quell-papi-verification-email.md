@@ -1,83 +1,72 @@
-# Email to Samantha Quell (Polaris Product Owner) — verify PAPI capabilities for the AutoLend evaluation
+# Email to Samantha Quell (Polaris Product Mgmt, Clarivate) — PAPI capability sanity-check
 
-*Drafted 2026-07-01. Purpose: confirm with Clarivate what PAPI does/doesn't support, because the
-vendor (International Library Services / "AutoLend") has told us Polaris/PAPI support said barcode
-catalog search is "not currently offered" — which contradicts the PAPI docs and RHPL's live testing.
-We are also making PAPI-only the contractual integration requirement, so we want Clarivate's read
-before it's finalized. Sources: [autolend-bill-papi-switch-reply.md](autolend-bill-papi-switch-reply.md)
-(Bill's account) and [autolend-jim-otlb-papi-verbiage.md](autolend-jim-otlb-papi-verbiage.md) (contract
-language). Corroboration from Eric Young (Phoenix Public Library), who is completing a fully-PAPI
-locker/vending integration with **Lyngsoe** using the same BibGetByType v2 barcode→bib call. Not sent
+*Drafted 2026-07-01. Purpose: get Sam's expert read on why a vendor (International Library Services /
+"AutoLend") was repeatedly told by Polaris/PAPI support that barcode catalog search "isn't offered,"
+when RHPL has verified it first-hand and Phoenix/Lyngsoe are doing it in production. Two pointed
+questions: (1) are we missing something / why would Polaris say it can't be done; (2) why would ILS
+believe PAPI patron verification wasn't supported when it's been out since 5.2 — is that somehow not
+surfaced to vendors on the Clarivate side. Tone: friendly/casual — Derek & Sam have an established
+joking rapport (per prior Gmail threads); Derek is coming to her for her expertise. Jokes left for
+Derek to add. Includes the verbatim quote from Bill's last email. Sources:
+[autolend-bill-papi-switch-reply.md](autolend-bill-papi-switch-reply.md),
+[autolend-bill-bibget-v2-thread.md](autolend-bill-bibget-v2-thread.md) (our live call + result),
+[autolend-jim-otlb-papi-verbiage.md](autolend-jim-otlb-papi-verbiage.md) (contract language). Not sent
 — awaiting Derek's review.*
 
 ---
 
-**To:** Samantha Quell (Product Owner, Polaris — Clarivate)
-**Subject:** Quick confirmation on PAPI capabilities for a hosted-Polaris kiosk integration
+**To:** Samantha Quell <Samantha.Quell@clarivate.com>
+**Subject:** A PAPI head-scratcher — picking your brain
 
 Sam,
 
-Hope you're well. I could use your read as the product owner on a couple of PAPI questions, because
-we're leaning on the API for a vendor evaluation and some of what we're being told doesn't quite
-square with the documentation.
+I'm coming to you on this one because you know PAPI and where Polaris is headed better than just about
+anyone, and I've got a genuine head-scratcher I can't reconcile.
 
-**The short context:** RHPL is helping a neighboring library (Oakland Township) evaluate an automated
-lending/pickup-locker vendor — International Library Services ("AutoLend"). We're recommending, and
-asking to put in the contract, that the device integrate with the host library's Clarivate-hosted
-Polaris **exclusively over PAPI** — patron authentication (barcode + PIN), item check-out, item
-check-in, hold pickup, and catalog/book content — with **no SIP2** used for any patron or material
-transaction, validated end-to-end before go-live.
+Quick background: RHPL is helping a neighboring library (Oakland Township) evaluate an automated
+lending/locker vendor — International Library Services ("AutoLend"). We're recommending, and want in
+the contract, that the device talk to the host library's Clarivate-hosted Polaris **exclusively over
+PAPI** — patron authentication (barcode + PIN), check-out, check-in, hold pickup, and catalog/book
+content — with **no SIP2** for any patron or material transaction.
 
-**Where I'd value your confirmation:** the vendor has told us that Polaris/PAPI support informed them,
-more than once (as recently as last August), that searching for **catalog data by item barcode** is
-"not currently offered." Because of that, their existing installs (e.g., ODIN / North Dakota, live
-since Jan 2023) built a custom barcode → Bib ID lookup and then used BibGet. But our own reading of
-the PAPI Revision History shows **BibGetByType v2 (barcode → Bib, `?type=barcode`) was introduced in
-Polaris 7.6**, and — importantly — we've verified it ourselves, hands-on. We ran the actual PAPI calls
-against RHPL's live Polaris and checked the responses against real material, covering the full path a
-locker/kiosk would use: **patron authentication, item check-out, item check-in, and item→bib
-matching**. Every one of them worked. The barcode→bib call in particular (BibGetByType v2, unsigned) we
-exercised across **~20 items** and it returned the correct bib every time — and a deliberately invalid
-barcode came back with the proper "invalid barcode" error, so it's genuinely validating input, not
-just echoing. This is first-hand and reproducible on our end, not secondhand. Other sites run it in
-production too (SILS is one), and patron barcode authentication (`AuthenticatePatron`) goes back to
-**Polaris 5.2** — so none of this is new. That's exactly what makes the vendor's account of being told
-barcode search is "not currently offered" (most recently last August) hard to square, and the gap I'd
-like to close.
+Here's where I'm stuck. The vendor tells us that Polaris/PAPI support told them — more than once, as
+recently as last August — that searching for catalog data by item barcode simply isn't offered. In
+his words:
 
-And it isn't only us — though you may well know this already, since you know Eric Young at **Phoenix
-Public Library** as well as I do. He and **Lyngsoe** are wrapping up the last pieces of running their
-lockers and vending **fully over PAPI**, including the item-record and bib-record matching calls. Eric
-confirmed
-you can pass an *item barcode* to PAPI and get the items tied to the same bib (BibGetByType v2 — the
-very call in question), calling it "a heavy lift, but it's what Lyngsoe is using"; the one remaining
-gap he flagged is that the hold-request GET needs to return the **Pickup Area**. (For completeness:
-Lyngsoe's *current* model still runs the transaction side over **SIP2** from their hosted SaaS to
-Innovative via a Lyngsoe/Innovative-provisioned tunnel — precisely the SIP2 dependency we're trying to
-design out by requiring PAPI-only.)
+> *"I even had this conversation with Polaris again last August when [we] were starting installation
+> for a different Polaris site (hosted). I again used the new site as an opportunity to communicate
+> with the PAPI support org to ask about barcode searches. I got 'not currently offered'. So that site
+> implemented a barcode and Bib ID setup for us, so we could lookup the barcode and get the Bib ID.
+> Then, we could use BibGet — and did."*
 
-Could you help me confirm three things:
+That just doesn't match what I'm seeing. We ran the calls ourselves against our live Polaris and
+verified the whole path a locker would use — patron auth, check-out, check-in, and item→bib matching —
+and it all works. The barcode→bib call in particular (BibGetByType v2, `?type=barcode`) we exercised
+across ~20 items and it returned the right bib every time; an invalid barcode even came back with the
+proper error, so it's genuinely validating input, not just echoing. And you almost certainly already
+know Eric Young at Phoenix Public Library — he and Lyngsoe are wrapping up a fully-PAPI locker/vending
+setup using that exact barcode→bib call. So this is clearly live and in production, not theoretical.
 
-1. **Barcode catalog lookup.** When did BibGetByType v2 (`?type=barcode`) become generally available,
-   and is it a supported, current PAPI method? I'm trying to understand whether there was ever a
-   period when "barcode catalog search is not offered" would have been accurate, versus simply crossed
-   wires.
+So my two real questions for you:
 
-2. **Patron + circulation over PAPI.** Is PAPI fully supported for a third-party self-service/kiosk
-   vendor to perform patron authentication (barcode + PIN), holds, and item check-out/check-in
-   (charge/discharge) against a **Clarivate-hosted** Polaris instance? Any known limitations, or sites
-   doing this in production today?
+**1. Are we missing something?** Is there any reason Polaris would tell a vendor that barcode catalog
+search (BibGetByType v2) can't be done — some licensing, hosted-instance provisioning, version, or
+public-method auth-level caveat I'm not seeing — when Phoenix is doing it with a vendor and I can
+reproduce it with our own PAPI calls? I'd genuinely rather find out I'm wrong now than after it's in a
+contract.
 
-3. **Recommended path for hosted customers.** For Clarivate-hosted Polaris, is PAPI the
-   supported/recommended integration path for a vendor like this (as opposed to SIP2, which for hosted
-   would require Clarivate to stand up dedicated secure tunnels)? Anything we should build into the
-   access provisioning or public-method authentication level (e.g., PWS signing)?
+**2. Why would ILS's team believe the capability wasn't there?** Patron verification/authentication
+over PAPI (`AuthenticatePatron`) has been around for ages — since 5.2 — so it's odd that a vendor would
+think it wasn't supported. Is that something that gets downplayed, or just doesn't get surfaced, when
+your support / dev-program folks talk to third-party vendors? I'm trying to figure out whether this is
+crossed wires on their end, or something on the Clarivate side that quietly steers vendors toward SIP2.
 
-I'm not looking to put anyone on the spot — I just want the picture I hand the board to be accurate,
-and to make sure our contract language matches what PAPI actually supports today. If there's someone
-on the PAPI / developer-program side you'd rather I loop in, I'm glad to.
+No fire drill at all — I just want the picture I hand the board to be accurate, and to make sure the
+PAPI-only contract language actually matches what Polaris supports today. If there's someone on the
+PAPI / dev-program side you'd rather I bug instead, point me their way. And if it's easier to just talk
+it through, I'm around.
 
-Thanks very much,
+Thanks Sam,
 
 Derek Brown
 Director of IT
