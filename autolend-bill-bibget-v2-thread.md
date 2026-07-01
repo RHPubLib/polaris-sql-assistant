@@ -40,6 +40,26 @@ Any idea why we can test it and it function and same with SILS (another Library 
 
 ---
 
+**From:** Bill McClendon (International Library Services)
+**Date:** Tue, Jun 30, 2026, 6:03 PM
+**To:** Derek Brown; Jason
+
+Derek,
+
+Yes, we have used SIP2 for all material transactions.  But we can switch to PAPI whenever we are asked. We only need to test before production implementation.  I didn't mean to imply we couldn't do it.
+
+I was talking about the Catalog record content requests. After your email response about barcode searches now working, we immediately began testing it for Lake Forest, North Dakota, and several other Polaris sites.  Testing was successfully completed within 10 minutes of getting the V2 barcode search access added for the sites in the PAPI provisioning.
+
+We have already reached out to them to ask them to pick a time to be implemented on their devices.
+
+NOTE: these notes are for the Barcode search to return catalog (MARC) data I communicated to you, to which you responded.
+
+We have tested the PAPI patron, hold, and most of the other calls previously, and still do when a new release is identified.  We have never had anyone in production request to use it for charge or discharge transactions before.
+
+It's a bit like NCIP.  We support it, and have since 2012.   But we don't have any production sites using it so far.
+
+---
+
 ## Finding (2026-06-22) — it's NOT new to 8.1
 
 Bill's "new in 8.1.x" theory doesn't hold up. Evidence:
