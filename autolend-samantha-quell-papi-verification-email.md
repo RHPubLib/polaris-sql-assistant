@@ -32,9 +32,19 @@ more than once (as recently as last August), that searching for **catalog data b
 since Jan 2023) built a custom barcode → Bib ID lookup and then used BibGet. But our own reading of
 the PAPI Revision History shows **BibGetByType v2 (barcode → Bib, `?type=barcode`) was introduced in
 Polaris 7.6**, and we've run it live — unsigned — against our own catalog, and confirmed other sites
-use it (e.g., SILS and Phoenix's locker system). Separately, patron barcode authentication
-(`AuthenticatePatron`) appears to go back to **Polaris 5.2**, so patron auth over PAPI is not new
-either. That's the gap I'd like to close.
+use it in production (SILS is one). Separately, patron barcode authentication (`AuthenticatePatron`)
+appears to go back to **Polaris 5.2**, so patron auth over PAPI is not new either. That's the gap I'd
+like to close.
+
+We also have direct peer corroboration on the locker/transaction side: Eric Young at **Phoenix Public
+Library** tells us he and **Lyngsoe** are wrapping up the last pieces of running their lockers and
+vending **fully over PAPI** — including the item-record and bib-record matching calls. Eric confirmed
+you can pass an *item barcode* to PAPI and get the items tied to the same bib (BibGetByType v2 — the
+very call in question), calling it "a heavy lift, but it's what Lyngsoe is using"; the one remaining
+gap he flagged is that the hold-request GET needs to return the **Pickup Area**. (For completeness:
+Lyngsoe's *current* model still runs the transaction side over **SIP2** from their hosted SaaS to
+Innovative via a Lyngsoe/Innovative-provisioned tunnel — precisely the SIP2 dependency we're trying to
+design out by requiring PAPI-only.)
 
 Could you help me confirm three things:
 
