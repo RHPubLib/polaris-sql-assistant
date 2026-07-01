@@ -50,8 +50,8 @@ With that in mind, a few friendly questions:
    small group of your Polaris customers who are also AutoLend customers, so we can confirm the transactional
    PAPI calls hold up across the board and not just on our system?
 
-You've been really responsive through all of this and I appreciate it — I just want to land on a clear picture
-of what a PAPI-only path looks like so I can give our board an accurate read.
+You've been really responsive through all of this and I appreciate it — I just want to land on a clear
+"here's now, here's later" so I can give our board an accurate read.
 
 Thanks,
 
