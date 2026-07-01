@@ -36,22 +36,23 @@ security story and the more natural fit with how we already operate.
 
 With that in mind, a few friendly questions:
 
-1. **Right now:** for a Clarivate-hosted Polaris site like ours, what would an AutoLend deployment realistically
-   look like *today* — PAPI for patron auth, holds, and checkout/checkin, or is SIP2 still the piece that's
-   actually running in production at your live sites?
+1. **PAPI-only onboarding:** if a customer wants AutoLend running entirely on PAPI — patron auth, holds, and
+   checkout/checkin all through the API, with no SIP2 at all — what does bringing that customer on actually
+   look like on your end?
 
-2. Related to that — reading your last note, it sounds like the patron/hold and charge-discharge PAPI calls
-   have been tested but aren't yet running in production anywhere. Is that right? If so, no problem at all — I'd
-   just want to understand it plainly, since it'd mean RHPL would be an early (or first) production site on that
-   path.
+2. **Development time:** reading your last note, it sounds like the patron/hold and charge-discharge PAPI calls
+   have been tested but aren't yet running in production anywhere — so RHPL would be an early, maybe first,
+   production site on that path. No problem at all; I'd just want to understand it plainly. Given that, roughly
+   what kind of development effort and timeline are we talking about to stand the transactional side up against
+   Clarivate-hosted Polaris? Your barcode-search testing came together in about ten minutes once provisioning was
+   added, which is a great sign — I'd just like the same picture for the transaction side.
 
-3. **Future:** if we go the full-PAPI route, what would the switch look like — a rough test plan and timeline for
-   validating the transactional calls against Clarivate-hosted Polaris? Your barcode-search testing came together
-   in about ten minutes once provisioning was added, which is a great sign; I'd just like the same picture for the
-   transaction side.
+3. **Validating across sites:** rather than proving it out at RHPL alone, would it make sense to work with a
+   small group of your Polaris customers who are also AutoLend customers, so we can confirm the transactional
+   PAPI calls hold up across the board and not just on our system?
 
-You've been really responsive through all of this and I appreciate it — I just want to land on a clear
-"here's now, here's later" so I can give our board an accurate read.
+You've been really responsive through all of this and I appreciate it — I just want to land on a clear picture
+of what a PAPI-only path looks like so I can give our board an accurate read.
 
 Thanks,
 
