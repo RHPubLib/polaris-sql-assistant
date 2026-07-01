@@ -123,3 +123,54 @@ authentication level set to ALL"*), which would require a signed `PWS` header.
 BibGetByType v2 (barcode→Bib)*): conveys the 7.6 revision-history citation, the Swagger-omits-v2
 point, the v1-vs-v2 URL gotcha, the SILS/Phoenix/hackathon corroboration, and the auth-level
 check — closing that the barcode→Bib lookup works cleanly so no barcode→Bib ID dump is needed.
+
+---
+
+## Eric Young (Phoenix Public Library) — vendor-side corroboration (captured 2026-07-01)
+
+*Eric Young at Phoenix PL, who runs Lyngsoe lockers on Polaris, on the barcode→Bib PAPI call and
+Lyngsoe's move to PAPI. Verbatim, for the record. Confirms BibGetByType v2 (item barcode → items on
+the same bib) is real and in use by a vendor, and that Lyngsoe's "SideEvent V2" now supports PAPI.*
+
+**From:** Eric Young (Phoenix Public Library)
+
+> "Sorry, got tied up, you can pass an item barcode with PAPI and get all items tied to the same bib 😛
+> It is a heavy lift but it is what Lyngsoe [is] using...
+> https://knowledge.ag-software.clarivate.com/polaris/PAPI/PAPIService/PAPIServiceBibGetByType_v2.htm"
+
+> "Yeah control number is BibID, but you can also pass the item barcode and get details... just need
+> the hold request get to include Pickup Area."
+
+**From:** Eric Young (Phoenix Public Library) — follow-up (Lyngsoe SideEvent V2 / PAPI status)
+
+> "We are testing the latest version of Lyngsoe's 'SideEvent Version 2' solution that supports PAPI
+> now. I have a test locker if you want I can jump on a Teams meeting and give you a tour.
+>
+> Yes, they offer browsable lending options. To my knowledge, Lyngsoe offers two distinct hardware
+> options. The model we have is designed exclusively for hold lockers. The other option, provided by a
+> different physical locker vendor, supports what Lyngsoe refers to as 'Library of Things' lending.
+> This system enables staff to stage items within the locker for browsable checkouts, allowing patrons
+> to select and check out items directly. While I'm not entirely sure about the specifics, such as
+> whether it uses glass doors, I have read that it allows for merging doors to create flexible locker
+> sizes. Although I haven't seen this hardware firsthand, I recently began testing the new SideEvent V2
+> software, which supports both LoT and Hold lockers.
+>
+> According to the developer, several Library of Things customers use only PAPI, but we would be the
+> first to use it for Hold lockers. PAPI support was launched for those LoT customers just this past
+> March, and I'm hoping our hold lockers will transition to PAPI soon. I was given an in-person demo of
+> the PAPI support from Lyngsoe back in Feb 2026.
+>
+> Regarding staff access, the current setup uses local accounts hosted by Lyngsoe. When I met with them
+> yesterday, I emphasized the need for MFA, and they assured me it is in development and should be
+> available soon. I even volunteered to partner with them for setup and testing."
+>
+> — Thank you, Eric Young
+
+**Why this matters for RHPL:** independent, vendor-side confirmation that (a) the barcode→Bib PAPI call
+(BibGetByType v2) is real and used by Lyngsoe, (b) Lyngsoe's SideEvent V2 supports PAPI for both LoT
+and Hold lockers, (c) LoT customers have run **PAPI-only since ~March 2026**, and (d) the only gap Eric
+noted is the hold-request GET needing **Pickup Area**. Directly contradicts ILS's "barcode search not
+currently offered" account. Feeds the Samantha Quell email
+([autolend-samantha-quell-papi-verification-email.md](autolend-samantha-quell-papi-verification-email.md)).
+Separate track (not a PAPI/catalog issue): Lyngsoe staff access is local accounts hosted by Lyngsoe —
+Eric pushed them for **MFA** (in development).
