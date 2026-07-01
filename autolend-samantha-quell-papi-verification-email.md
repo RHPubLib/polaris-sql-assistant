@@ -6,7 +6,9 @@ catalog search is "not currently offered" — which contradicts the PAPI docs an
 We are also making PAPI-only the contractual integration requirement, so we want Clarivate's read
 before it's finalized. Sources: [autolend-bill-papi-switch-reply.md](autolend-bill-papi-switch-reply.md)
 (Bill's account) and [autolend-jim-otlb-papi-verbiage.md](autolend-jim-otlb-papi-verbiage.md) (contract
-language). Not sent — awaiting Derek's review.*
+language). Corroboration from Eric Young (Phoenix Public Library), who is completing a fully-PAPI
+locker/vending integration with **Lyngsoe** using the same BibGetByType v2 barcode→bib call. Not sent
+— awaiting Derek's review.*
 
 ---
 
