@@ -57,3 +57,66 @@ Director of IT
 Rochester Hills Public Library
 500 Olde Towne Road, Rochester, MI 48307
 Office: 248-650-7123
+
+---
+
+## Bill's reply (received 2026-07-01) — his answers to the three questions above
+
+*Bill McClendon (International Library Services), replying to the email above. Captured
+verbatim for the record. His numbered items 1–3 answer Derek's "PAPI-only onboarding,"
+"Development time," and "Validating across sites" questions, in order.*
+
+**From:** Bill McClendon (International Library Services)
+**Date:** 2026-07-01
+
+Derek,
+
+Well North Dakota's installation  (ODIN) predates the release of the ability to search for catalog data by barcode on the Clarivate site PAPI documents.
+
+NOTE: I even had this conversation with Polaris again last August when were starting installation for a different Polaris site (hosted). I again used the new site as an opportunity to communicate with the PAPI support org to ask about barcode searches.  I got "not currently offered".
+
+So that site implemented a barcode and Bib ID setup for us, so we could lookup the barcode and get the Bib ID.  Then, we could use BibGet - and did.
+
+ODIN has never had to deal with the AutoLend's again since installation in January of 2023.  The person assigned to the ND implementation  gave us the connection information we needed, we implemented, they have run ever since without issue.
+
+Sure, PAPI is secure. But you can make anything secure, if you know what to do.  Its why I asked about a VPN tunnel - many sites in the last year have asked us if we support them (as I told you, we have for years) and they get setup and used when requested.
+
+Without direct evidence, I suspect that most libraries use SIP2 because -  they always have, they know it (somewhat), they trust it, and they can get it configured and running.  API's are the future (especially web services like this) , only they all require a different codebase (library) for each vendor.  They are what all the ILS Apps run on.  I wrote the first one for Sirsi (SirsiDynix) in 2008
+
+Regardless, we are doing this for your site.  Here are your responses below:
+
+1 - It will look no different for you.  We will have tested and verified the PAPI calls for circulation transactions before an AutoLend is installed and implemented at your location (if you choose us) in a test environment.  We would only be left to test your items with PAPI for your instance.  That is a 30 minute task from our perspective.
+
+If you prefer, we could arrange to test these calls before we arrive using test records in your system and using a designated item barcode or two and a designated test ID or two, so we can report on that before we ever arrive to implement. In reality, some sites are never really ready that early so we routinely test such connections and communications on-site, after we install and QC their device(s) before staff training the next day.  These two approaches are routine.
+
+If you choose the AutoLend (or any of our devices), we will ask for 1-3 item barcodes and 1-2 patron barcodes that we can use for integration testing during our initial installation and QC.  When staff training occurs, we would request your team to bring 10 or more items to be used during that training, so that staff can practice the process of placing material into inventory inside the device(s). This staff training process takes about 30 minutes.  This is routine.
+
+2 - Less than a week on our side.
+
+Note: I should add that it makes no difference to our side if the ILS is hosted or not, or who is hosting it.  To date, we have not had any site (new or existing) that was Polaris/Clarivate hosted that presented a challenge beyond the initial access configuration.  I created, designed, and managed the Sirsi (later SirsiDynix) hosting setup, when I was there. I'm reasonably familiar with such implementations.
+
+3 - We are already working on that with a consortial site with a test server setup mirroring their production system.  I'll let you know how that goes.
+
+I am not downplaying the importance of your setup, connection, hosted system access, security concerns, security requirements, or any other aspect of same.  Please know that none of my responses should be construed in that way.  We are just that experienced with them.
+
+---
+
+## Open discrepancies to verify with Clarivate (→ email to Samantha Quell, Polaris Product Owner)
+
+Bill's account has points that don't line up with the PAPI documentation; escalating to
+Clarivate to confirm before the contract language is finalized:
+
+1. **"Barcode catalog search not currently offered" (told to Bill by PAPI support as recently
+   as ~Aug 2025).** Contradicts the PAPI Revision History, which introduced **BibGetByType v2
+   (`?type=barcode`, barcode → Bib) in Polaris 7.6** — and RHPL has run it live/unsigned against
+   production, with SILS and Phoenix also using it. Question for Clarivate: when did v2 go GA, and
+   was there ever a window where "not offered" would have been accurate? (ODIN installed Jan 2023,
+   so ODIN *may* genuinely predate v2 — but the repeated later "not offered" answers are the issue.)
+2. **Patron barcode auth is long-standing.** `AuthenticatePatron` has supported barcode since
+   **Polaris 5.2** — so patron authentication/status over PAPI is not new. Confirm PAPI is fully
+   supported for a kiosk vendor's patron auth, holds, and charge/discharge on hosted Polaris.
+3. **PAPI vs SIP2 for hosted customers.** Confirm PAPI is the supported/recommended path for a
+   third-party self-service vendor against Clarivate-hosted Polaris (SIP2 would require Clarivate
+   to stand up dedicated secure tunnels), plus any provisioning / auth-level (PWS signing) notes.
+
+Draft email: [autolend-samantha-quell-papi-verification-email.md](autolend-samantha-quell-papi-verification-email.md).
