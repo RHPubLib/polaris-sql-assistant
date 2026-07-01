@@ -1,6 +1,8 @@
-# Reply to Bill (ILS) — friendly: what's possible now vs. future, PAPI is the priority
+# Reply to Bill (ILS) — friendly: what's possible now vs. future, PAPI is the priority — SENT 2026-07-01
 
-*Drafted 2026-07-01 (v2, friendlier). Context: Bill's 6/30 thread where framing shifted from "SIP2 only /
+*SENT 2026-07-01 (v2, friendlier; final sent text below — minor edits from draft: "Where my head is now:" prefix
+dropped, item 2 dev-time ask tightened, closing folded into the "Validating across sites" paragraph, "our board"
+→ "OT's board"). Context: Bill's 6/30 thread where framing shifted from "SIP2 only /
 barcode lookup not possible" to "we do PAPI in all products — a misunderstanding." Softened after Derek
 recalled ODIN originally *asked* for PAPI (so there may be genuine crossed wires on all sides). OT board vote
 likely happened the night of 6/30. Key technical lever: Clarivate-hosted Polaris + SIP2 requires special
