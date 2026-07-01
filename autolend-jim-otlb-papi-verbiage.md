@@ -14,7 +14,9 @@ Jim,
 Good talking with you. As promised, I looked over the PAPI language in the ILS quote. Short version: the technical
 path is solid — we checked every step of a transaction (patron sign-in, check-out, check-in, holds, and pulling book
 info and cover art) against Polaris's own documentation, and every one is supported over the secure Polaris API
-("PAPI"). We've even run the catalog piece live against our own system. So there's no technical roadblock.
+("PAPI"). We've even run the catalog piece live against our own system. So there's no technical roadblock. The one
+piece we'll want to prove hands-on during setup is holds — a pickup locker has its own workflow — which is exactly
+what the end-to-end test in Option 2 is for.
 
 The only open question is how tightly you want the *quote* to commit to it. Here are the two ways you can go:
 
