@@ -42,9 +42,10 @@ production too (SILS is one), and patron barcode authentication (`AuthenticatePa
 barcode search is "not currently offered" (most recently last August) hard to square, and the gap I'd
 like to close.
 
-We also have direct peer corroboration on the locker/transaction side: Eric Young at **Phoenix Public
-Library** tells us he and **Lyngsoe** are wrapping up the last pieces of running their lockers and
-vending **fully over PAPI** — including the item-record and bib-record matching calls. Eric confirmed
+And it isn't only us — though you may well know this already, since you know Eric Young at **Phoenix
+Public Library** as well as I do. He and **Lyngsoe** are wrapping up the last pieces of running their
+lockers and vending **fully over PAPI**, including the item-record and bib-record matching calls. Eric
+confirmed
 you can pass an *item barcode* to PAPI and get the items tied to the same bib (BibGetByType v2 — the
 very call in question), calling it "a heavy lift, but it's what Lyngsoe is using"; the one remaining
 gap he flagged is that the hold-request GET needs to return the **Pickup Area**. (For completeness:
