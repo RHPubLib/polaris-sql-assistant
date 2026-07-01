@@ -1,9 +1,12 @@
-# Reply to Bill (ILS) — accept PAPI switch, pin down "first production site," ask for test plan
+# Reply to Bill (ILS) — friendly: what's possible now vs. future, PAPI is the priority
 
-*Drafted 2026-07-01. Context: Bill's 6/30 thread ("PAPI use with the ILS Autolend, and all ILS
-products") where the tone pivoted from "SIP2 only / PAPI barcode lookup not possible" to "we do PAPI
-in all products — this was a misunderstanding," then walked back to "we've tested PAPI transactions
-but have no production sites using it." Related: [autolend-bill-bibget-v2-thread.md](autolend-bill-bibget-v2-thread.md).*
+*Drafted 2026-07-01 (v2, friendlier). Context: Bill's 6/30 thread where framing shifted from "SIP2 only /
+barcode lookup not possible" to "we do PAPI in all products — a misunderstanding." Softened after Derek
+recalled ODIN originally *asked* for PAPI (so there may be genuine crossed wires on all sides). OT board vote
+likely happened the night of 6/30. Key technical lever: Clarivate-hosted Polaris + SIP2 requires special
+secure stunnel tunnels stood up by Clarivate, and CloudOps ticket replies didn't indicate ILS/AutoLend has
+those — so PAPI is both the security path and the seamless-integration path RHPL already runs with other
+vendors. Related: [autolend-bill-bibget-v2-thread.md](autolend-bill-bibget-v2-thread.md).*
 
 ---
 
@@ -11,39 +14,44 @@ but have no production sites using it." Related: [autolend-bill-bibget-v2-thread
 
 Bill,
 
-Thanks for clarifying — and I appreciate you responding while you're at ALA.
+No worries at all — and thanks for taking the time to write back while you're at ALA.
 
-I want to be candid, because I think it will save us both time. We've traded roughly a dozen emails
-over the last two weeks on exactly this topic, and I went back through the whole chain before writing
-this. Through most of it the consistent message was that SIP2 handles the patron and material
-transactions, that PAPI was used read-only for catalog/cover-art, and — on the barcode→bib lookup
-specifically — that it "had not succeeded" on your sites and might be new to 8.1.x. So I'll admit I
-was surprised by how much the framing shifted in the span of a single afternoon, from that position to
-"we do PAPI in all our products, this was a misunderstanding." I'm not trying to assign blame; I just
-want us both working from the same facts, because my recommendation to our board depends on getting
-this exactly right.
+Honestly, re-reading everything, I think there's been some genuine crossed wires on all sides here, and
+that's okay. When I spoke with the folks at ODIN it actually sounded like they'd asked for PAPI from the
+start too, so I don't think anyone was trying to muddy the water — we've just been coming at it from
+different angles across a couple weeks and a dozen or so emails. I only flagged it because I want to make
+sure you and I are working from the same picture before I bring anything back to the table.
 
-Here's where I land, and what I'd need to move forward:
+Where my head is now: the Oakland Township board most likely voted last night, so what I'm really trying to
+sort out is simply **what's possible today versus what would be possible down the road.** Two lanes, and I'd
+love your read on each.
 
-1. **We'll take you up on the PAPI switch.** For RHPL, all patron and material transactions on the
-   AutoLend unit would run through PAPI against our (Clarivate-hosted) Polaris — not SIP2. Your note
-   says you can switch "whenever we are asked," so consider this the ask.
+The reason PAPI matters so much to us isn't only the security upside — it's the seamless experience. We're
+already comfortable supporting several third-party vendors against our Clarivate-hosted Polaris over PAPI, so
+it's a well-worn path on our end. And candidly, I have a hard time picturing many Clarivate-hosted Polaris
+customers running AutoLend over SIP2 *only*, because Clarivate would have had to stand up dedicated secure
+(stunnel) tunnels for each of them — and when we were trading ticket replies with Clarivate's CloudOps team,
+that didn't appear to be something already in place for ILS/AutoLend. So PAPI ends up being both the cleaner
+security story and the more natural fit with how we already operate.
 
-2. **I need one thing stated plainly:** your last email said you've *tested* the patron/hold and
-   charge/discharge PAPI calls but have "never had anyone in production request to use it" and have "no
-   production sites using it so far." Reading that directly — **RHPL would be your first production
-   deployment running AutoLend transactions over PAPI, correct?** I'm not treating that as a
-   dealbreaker, but I have to represent it accurately to the board, so I need a clear yes/no rather
-   than an inference.
+With that in mind, a few friendly questions:
 
-3. **Before any commitment, I'd want a written test plan and timeline** for the PAPI transactional
-   path (patron auth, holds, checkout/checkin), including what you'd validate in a test environment
-   against Clarivate-hosted Polaris and roughly how long you'd expect that to take. Your barcode-search
-   testing came together in about ten minutes once provisioning was added, which is encouraging — I'd
-   like the same clarity on the transaction calls.
+1. **Right now:** for a Clarivate-hosted Polaris site like ours, what would an AutoLend deployment realistically
+   look like *today* — PAPI for patron auth, holds, and checkout/checkin, or is SIP2 still the piece that's
+   actually running in production at your live sites?
 
-None of this changes that we've found you responsive and easy to work with. I just want the
-production-readiness question answered on the record before we go further.
+2. Related to that — reading your last note, it sounds like the patron/hold and charge-discharge PAPI calls
+   have been tested but aren't yet running in production anywhere. Is that right? If so, no problem at all — I'd
+   just want to understand it plainly, since it'd mean RHPL would be an early (or first) production site on that
+   path.
+
+3. **Future:** if we go the full-PAPI route, what would the switch look like — a rough test plan and timeline for
+   validating the transactional calls against Clarivate-hosted Polaris? Your barcode-search testing came together
+   in about ten minutes once provisioning was added, which is a great sign; I'd just like the same picture for the
+   transaction side.
+
+You've been really responsive through all of this and I appreciate it — I just want to land on a clear
+"here's now, here's later" so I can give our board an accurate read.
 
 Thanks,
 
