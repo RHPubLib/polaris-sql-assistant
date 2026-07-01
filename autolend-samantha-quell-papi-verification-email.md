@@ -43,9 +43,14 @@ That just doesn't match what I'm seeing. We ran the calls ourselves against our 
 verified the whole path a locker would use — patron auth, check-out, check-in, and item→bib matching —
 and it all works. The barcode→bib call in particular (BibGetByType v2, `?type=barcode`) we exercised
 across ~20 items and it returned the right bib every time; an invalid barcode even came back with the
-proper error, so it's genuinely validating input, not just echoing. And you almost certainly already
-know Eric Young at Phoenix Public Library — he and Lyngsoe are wrapping up a fully-PAPI locker/vending
-setup using that exact barcode→bib call. So this is clearly live and in production, not theoretical.
+proper error, so it's genuinely validating input, not just echoing. And you may well already
+know what Lyngsoe is up to here — Eric Young at Phoenix Public Library filled me in. Their latest
+software ("SideEvent V2") now supports PAPI, and per Lyngsoe's own developer several of their "Library
+of Things" locker customers are already running PAPI-only — that support went live this past March.
+Eric's team is testing it now for their hold lockers and expects to switch over to PAPI soon (they'd be
+the first Lyngsoe hold-locker site on it); he even got an in-person PAPI demo from Lyngsoe back in
+February. So the barcode→bib and transaction calls are already live in production with a real vendor,
+not theoretical.
 
 So my two real questions for you:
 
