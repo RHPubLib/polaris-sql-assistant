@@ -23,16 +23,15 @@ different angles across a couple weeks and a dozen or so emails. I only flagged 
 sure you and I are working from the same picture before I bring anything back to the table.
 
 Where my head is now: the Oakland Township board most likely voted last night, so what I'm really trying to
-picture is what it looks like to bring on a customer who wants **PAPI as the only integration method** — no
-SIP2 in the mix at all. That's the direction we'd want to go, and I'd love your read on a few things around it.
+sort out is simply what's possible today versus what would be possible down the road.
 
-The reason PAPI matters so much to us isn't only the security upside — it's the seamless experience. We're
-already comfortable supporting several third-party vendors against our Clarivate-hosted Polaris over PAPI, so
-it's a well-worn path on our end. And candidly, I have a hard time picturing many Clarivate-hosted Polaris
-customers running AutoLend over SIP2 *only*, because Clarivate would have had to stand up dedicated secure
-(stunnel) tunnels for each of them — and when we were trading ticket replies with Clarivate's CloudOps team,
-that didn't appear to be something already in place for ILS/AutoLend. So PAPI ends up being both the cleaner
-security story and the more natural fit with how we already operate.
+The reason PAPI matters so much to us isn't only the security upside; it's the seamless experience. We're
+already comfortable supporting our third-party vendors against our Clarivate-hosted Polaris over PAPI. And
+candidly, I have a hard time picturing many Clarivate-hosted Polaris customers running AutoLend over SIP2 only,
+because Clarivate would have had to stand up dedicated secure (stunnel) tunnels for each of them. When we were
+trading ticket replies with Clarivate's CloudOps team, that didn't appear to be something already in place for
+ILS/AutoLend that they had seen before. So PAPI ends up being both the cleaner security fit and the more
+natural fit with how we already operate.
 
 With that in mind, a few friendly questions:
 
